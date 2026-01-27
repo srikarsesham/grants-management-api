@@ -1,0 +1,5058 @@
+{
+	"info": {
+		"_postman_id": "e102af43-2e6d-4257-a018-da04e4b7155d",
+		"name": "GrantsManagement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ConfigManager",
+			"item": [
+				{
+					"name": "User Management",
+					"item": [
+						{
+							"name": "Login_Config_Manager",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "52815cc0-c9e5-45e5-9f4a-3d9bd82111cb",
+										"exec": [
+											"let body = pm.response.text().trim();\r",
+											"let json = body.startsWith(\"{\") ? pm.response.json() : {};\r",
+											"let token = (json.token || \"\").trim();\r",
+											"if (!token && /^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$/.test(body)) token = body;\r",
+											"pm.environment.set(\"CM_token\", token);\r",
+											"pm.test(\"Token extracted\", () => pm.expect(token).to.be.a(\"string\").and.not.empty);\r",
+											"\r",
+											"//test"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "f8280617-49f2-4fe9-a2a3-fcc79272550a",
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "020031c5-857c-40bf-8563-cba9d110cecf",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"username\": \"hemanth.naidu@meridianit.com\",\r\n  \"password\": \"dummypassword\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://grants.southindia.cloudapp.azure.com/api/configuration-manager/login"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Admin_and_no-role_users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "1b7c37a5-0016-4f65-b4e2-aa62045c62c0",
+										"exec": [
+											"let data = pm.response.json();\r",
+											"\r",
+											"// Find user where role does NOT contain \"ADMIN\"\r",
+											"let user = data.find(u => !u.CurrentRole.toLowerCase().includes(\"admin\"));\r",
+											"\r",
+											"// Always override – even with empty string when not found\r",
+											"pm.environment.set(\"user_email_non_admin\", user ? user.Email : \"\");\r",
+											"pm.environment.set(\"user_role\", user ? user.CurrentRole : \"\");\r",
+											"\r",
+											"// Test (optional)\r",
+											"pm.test(\"User without ADMIN role found (or set empty)\", () => {\r",
+											"    pm.expect(true).to.be.true;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "dafbe6de-8f9e-4cf3-8cc3-1191a40b645f",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "0647199d-962b-4ef8-b65f-c643201ba4d0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/admin-or-norole"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Admin_and_no-role_users Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "07028259-9aa8-441e-b4f6-3dcd81107019",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "c2dd4572-e4b9-49fe-a284-f0a5cb0db87b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"{{user_email_non_admin}}\",\r\n  \"roleName\": \"ADMIN\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/{{user_email_non_admin}}/assign-role"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Users_Admins",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "46e583f5-e82b-4f7e-8cbc-ac8033b889b0",
+										"exec": [
+											"// Parse JSON response and validate",
+											"let data;",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response is valid JSON\", function () {",
+											"    pm.expect(function() { data = pm.response.json(); }).to.not.throw();",
+											"});",
+											"",
+											"pm.test(\"Response is a non-empty array\", function () {",
+											"    pm.expect(Array.isArray(data)).to.be.true;",
+											"    pm.expect(data.length).to.be.at.least(1);",
+											"});",
+											"",
+											"",
+											"// Assertion",
+											"pm.test(\"First email exists\", function () {",
+											"    pm.expect(data[0]).to.be.a('string').and.not.empty;",
+											"});",
+											"",
+											"// Store environment variable",
+											"pm.environment.set(\"first_admin_email\", data[0]);",
+											"",
+											"//testetset"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "9377e2e8-31e8-44c9-a24d-0c9ac64c8481",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "ae36f50b-8644-4a4b-8a9a-891c96f0fb77",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/admins"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Programs assigned to Admin",
+							"id": "379fecaa-0692-4a46-9eaf-badb70017b3d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "Content-Type",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/{{first_admin_email}}/programs"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_config_manager_dashboard_stats",
+							"id": "8e089451-af60-437d-ad27-4fa0b4901f0b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "Content-Type",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/dashboard/stats"
+							},
+							"response": []
+						},
+						{
+							"name": "GetAdminUsersdetailstest",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2245ed6a-f3e7-4802-84d4-9fed0f512603",
+										"exec": [
+											"let data;\r",
+											"\r",
+											"// Validate status code\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"// Parse response\r",
+											"pm.test(\"Response is valid JSON\", function () {\r",
+											"    data = pm.response.json();\r",
+											"    pm.expect(Array.isArray(data)).to.be.true;\r",
+											"    pm.expect(data.length).to.be.greaterThan(0);\r",
+											"});\r",
+											"\r",
+											"// Pick first active admin\r",
+											"let admin = data.find(u => u.Status === \"Active\" && u.CurrentRole === \"ADMIN\");\r",
+											"\r",
+											"// Validate admin exists\r",
+											"pm.test(\"Active ADMIN user exists\", function () {\r",
+											"    pm.expect(admin, \"No active admin found\").to.exist;\r",
+											"});\r",
+											"\r",
+											"// Save UserSecurityID\r",
+											"if (admin) {\r",
+											"    pm.environment.set(\"userSecurityId\", admin.UserSecurityID);\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "6613932c-f344-4d1f-9f52-bcf7bebe653b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "Content-Type",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/admin-details"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_dep_managed_by_Admin",
+							"id": "729d1ae2-223c-40ee-a653-2f3da5837ba7",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "Content-Type",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/{{userSecurityId}}/managed-departments"
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "ef63706b-c7c6-4830-bb38-2337cd7628a9",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/{{userSecurityId}}/divisions/{{divisionId}}/programs"
+							},
+							"response": []
+						}
+					],
+					"id": "7312b4ce-439d-425a-852a-7974bbd1b1b1",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2d25144d-7154-4f38-887f-22dc00e42e1e",
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "244ad30b-adc8-4b0e-bc9d-74d506e369c6",
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Departments",
+					"item": [
+						{
+							"name": "Create_Department_Page",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e8f40fac-f069-4df2-b080-0ecfc9700dc1",
+										"exec": [
+											"//Status Code Test",
+											"pm.test(\"Status code is 200 or 201\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+											"});",
+											"",
+											"//Validate response is valid JSON",
+											"// pm.test(\"Response is valid JSON\", function () {",
+											"//     pm.response.to.be.json;",
+											"// });",
+											"",
+											"//Validate response message",
+											"pm.test(\"Department created successfully\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"Department created\");",
+											"});",
+											"",
+											"//Validate response time",
+											"pm.test(\"Response time is under 1 second\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "4061e414-2b83-46ca-84a5-8e440f98cc81",
+										"exec": [
+											"// Generate a unique timestamp\r",
+											"const timestamp = Date.now();\r",
+											"\r",
+											"// Generate department data\r",
+											"const departmentName = \"Dept_\" + timestamp;\r",
+											"const departmentDescription = \"Dept Description \" + timestamp;\r",
+											"const departmentStatus = \"Draft\"; // keep fixed or change if needed\r",
+											"\r",
+											"// Save to environment variables\r",
+											"pm.environment.set(\"departmentName\", departmentName);\r",
+											"pm.environment.set(\"departmentDescription\", departmentDescription);\r",
+											"pm.environment.set(\"departmentStatus\", departmentStatus);\r",
+											"\r",
+											"// Log for debugging\r",
+											"console.log(\"Generated department:\");\r",
+											"console.log(\"Name:\", departmentName);\r",
+											"console.log(\"Description:\", departmentDescription);\r",
+											"console.log(\"Status:\", departmentStatus);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "394fe270-774d-4360-a725-e7dd804cd6dd",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"{{departmentName}}\",\r\n  \"description\": \"{{departmentDescription}}\",\r\n  \"status\": \"{{departmentStatus}}\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://grants.southindia.cloudapp.azure.com/api/departments/create"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_all_Departments",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b5f8da6b-1e2e-495f-9cc7-93d35fee9a97",
+										"exec": [
+											"const data = pm.response.json();",
+											"",
+											"// Test 1: Status code is 200",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Test 2: Response time is less than 200ms",
+											"pm.test(\"Response time is less than 200ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(200);",
+											"});",
+											"",
+											"// ============================================",
+											"// DEPARTMENT ID EXTRACTION",
+											"// ============================================",
+											"",
+											"pm.test(\"Department ID is extracted and saved to environment variable\", function () {",
+											"    // Check if response is an array with departments",
+											"    if (Array.isArray(data) && data.length > 0) {",
+											"        // Get the most recently created department (first item or last item based on sorting)",
+											"        // Assuming the API returns newest first, or we can sort by CreatedDate",
+											"        let newestDepartment = data[0];",
+											"        ",
+											"        // If there are multiple departments, find the one with the latest CreatedDate",
+											"        if (data.length > 1) {",
+											"            newestDepartment = data.reduce((latest, current) => {",
+											"                const latestDate = new Date(latest.CreatedDate || 0);",
+											"                const currentDate = new Date(current.CreatedDate || 0);",
+											"                return currentDate > latestDate ? current : latest;",
+											"            }, data[0]);",
+											"        }",
+											"        ",
+											"        // Extract department ID (check common field names)",
+											"        const departmentId = newestDepartment.DepartmentID || ",
+											"                            newestDepartment.departmentId || ",
+											"                            newestDepartment.id || ",
+											"                            newestDepartment.ID;",
+											"        ",
+											"        pm.expect(departmentId, \"Department ID should be found\").to.not.be.undefined;",
+											"        ",
+											"        // Save to environment variable",
+											"        pm.environment.set(\"departmentId\", departmentId);",
+											"        ",
+											"        console.log(\"Newest Department:\", newestDepartment.Name || \"Unknown\");",
+											"        console.log(\"Department ID saved to environment variable 'departmentId':\", departmentId);",
+											"    } else {",
+											"        pm.expect.fail(\"No departments found in response\");",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "ea94b6b4-331e-4242-abb6-7f4ff301eedb",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "270f7c66-74af-43f5-b064-61c66631a526",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://grants.southindia.cloudapp.azure.com/api/departments"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Department_Summary",
+							"id": "9f95142c-0df6-4096-94fd-d402b5b159f1",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "https://grants.southindia.cloudapp.azure.com/api/departments/{{departmentId}}/summary"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_all_Unique_Department",
+							"id": "dca28146-f078-4016-aa11-51a354e8b21b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"url": "https://grants.southindia.cloudapp.azure.com/api/departments/statuses"
+							},
+							"response": []
+						},
+						{
+							"name": "KPI_Department",
+							"id": "1b8252ad-e784-4f73-821f-809ed03cdd78",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"url": "https://grants.southindia.cloudapp.azure.com/api/departments/kpi-dashboard"
+							},
+							"response": []
+						}
+					],
+					"id": "6554d153-b11d-4c94-8f94-8709834ef2a5",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7a2e70c9-3d75-4db0-a820-6773a7a1c0f5",
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "84c43884-c454-40cf-a6b5-32ea241d0995",
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {},
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+									"});"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Divisions",
+					"item": [
+						{
+							"name": "Get_Divisions_KPI_by_Department",
+							"id": "94473bdf-9fd6-4b78-afc4-178e1ab4e40e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/divisions/kpis/{{departmentId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Create_Division",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "921ceffa-c08f-4cbc-8b51-ffb78a4aa74e",
+										"exec": [
+											"// Generate unique division name using timestamp",
+											"const divisionName = \"Division_\" + Date.now();",
+											"",
+											"// Generate division description",
+											"const divisionDescription = \"Division Description \" + Date.now();",
+											"",
+											"// Set division status",
+											"const divisionStatus = \"Draft\";",
+											"",
+											"// Save values to environment variables",
+											"pm.environment.set(\"divisionName\", divisionName);",
+											"pm.environment.set(\"divisionDescription\", divisionDescription);",
+											"pm.environment.set(\"divisionStatus\", divisionStatus);",
+											"",
+											"console.log(\"Division Name: \" + divisionName);",
+											"console.log(\"Division Description: \" + divisionDescription);",
+											"console.log(\"Division Status: \" + divisionStatus);"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "47d135a0-d9af-4a5c-a850-1cd098be9a12",
+										"exec": [
+											"// Test 1: Validate status code is 200 or 201",
+											"pm.test(\"Status code is 200 or 201\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+											"});",
+											"",
+											"// Test 2: Validate response is valid JSON",
+											"pm.test(\"Response is valid JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"// Test 3: Validate response contains success message",
+											"pm.test(\"Response contains success message\", function () {",
+											"    const responseText = pm.response.text().toLowerCase();",
+											"    pm.expect(",
+											"        responseText.includes(\"division created\") || ",
+											"        responseText.includes(\"success\") ||",
+											"        responseText.includes(\"created\")",
+											"    ).to.be.true;",
+											"});",
+											"",
+											"// Test 4: Validate response time is under 1 second (performance test)",
+											"pm.test(\"Response time is under 1 second\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "69891963-9c4d-4c87-9558-0e67ce1f535f",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"{{divisionName}}\",\r\n  \"description\": \"{{divisionDescription}}\",\r\n  \"status\": \"{{divisionStatus}}\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/divisions/save/{{departmentId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Divsions_by_department",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "55d53ee3-cbac-4696-996d-055d5a5915ba",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response is a JSON array\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an('array');",
+											"});",
+											"",
+											"pm.test(\"Response time is under 2000ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+											"});",
+											"",
+											"pm.test(\"Each division has required properties\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    jsonData.forEach(function(division) {",
+											"        pm.expect(division).to.have.property('DivisionID');",
+											"        pm.expect(division).to.have.property('DepartmentID');",
+											"        pm.expect(division).to.have.property('Name');",
+											"        pm.expect(division).to.have.property('Status');",
+											"        pm.expect(division).to.have.property('CreatedDate');",
+											"        pm.expect(division).to.have.property('TotalPrograms');",
+											"    });",
+											"});",
+											"",
+											"pm.test(\"DivisionID is extracted and saved to environment variable\", function () {",
+											"    const responseData = pm.response.json();",
+											"    pm.expect(responseData.length).to.be.greaterThan(0, \"Response array should have at least one division\");",
+											"    ",
+											"    const divisionId = responseData[0].DivisionID;",
+											"    pm.expect(divisionId).to.not.be.undefined;",
+											"    pm.expect(divisionId).to.not.be.null;",
+											"    pm.expect(divisionId).to.be.a('number');",
+											"    ",
+											"    pm.environment.set(\"divisionId\", divisionId);",
+											"    console.log(\"DivisionID saved to environment variable 'divisionId':\", divisionId);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1b87801d-b2d1-48c2-9812-66bc8895b19b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "748af938-4821-473f-a234-048fb4684049",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/divisions/department/{{departmentId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Update_Division",
+							"id": "7daeb311-1e42-4bec-bb0f-0ae6453dbbd2",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"{{divisionName}}\",\r\n  \"description\": \"{{divisionDescription}}\",\r\n  \"status\": \"{{divisionStatus}}\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/divisions/{{departmentId}}/{{divisionId}}"
+							},
+							"response": []
+						}
+					],
+					"id": "fd8e2147-5cbd-4aec-990a-54a265bbd788"
+				},
+				{
+					"name": "Programs",
+					"item": [
+						{
+							"name": "Programs Documents",
+							"item": [
+								{
+									"name": "Login_Config_Manager Copy",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "52815cc0-c9e5-45e5-9f4a-3d9bd82111cb",
+												"exec": [
+													"let body = pm.response.text().trim();\r",
+													"let json = body.startsWith(\"{\") ? pm.response.json() : {};\r",
+													"let token = (json.token || \"\").trim();\r",
+													"if (!token && /^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$/.test(body)) token = body;\r",
+													"pm.environment.set(\"CM_token\", token);\r",
+													"pm.test(\"Token extracted\", () => pm.expect(token).to.be.a(\"string\").and.not.empty);\r",
+													"\r",
+													"//test"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "f8280617-49f2-4fe9-a2a3-fcc79272550a",
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"id": "78ddaae6-4226-41d7-a351-1e5715f58852",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"username\": \"hemanth.naidu@meridianit.com\",\r\n  \"password\": \"dummypassword\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "https://grants.southindia.cloudapp.azure.com/api/configuration-manager/login"
+									},
+									"response": []
+								},
+								{
+									"name": "Get_documnets_by_programID",
+									"id": "16e00d76-78b2-41fe-a6bb-e708fd9a6879",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Upload_documents",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a25e57dd-7b06-4f82-90f2-44e7c71818ed",
+												"exec": [
+													"// ============================================",
+													"// BASIC TEST CASES",
+													"// ============================================",
+													"",
+													"// Test 1: Status code validation (200 or 201)",
+													"pm.test(\"Status code is 200 or 201\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+													"});",
+													"",
+													"// Test 2: Validate response is valid JSON",
+													"pm.test(\"Response is valid JSON\", function () {",
+													"    pm.response.to.be.json;",
+													"});",
+													"",
+													"// Test 3: Check response time is under 2000ms",
+													"pm.test(\"Response time is under 2000ms\", function () {",
+													"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+													"});",
+													"",
+													"// Test 4: Validate response structure has expected fields",
+													"pm.test(\"Response has expected structure\", function () {",
+													"    const jsonData = pm.response.json();",
+													"    ",
+													"    // Check for common response structures",
+													"    // Either direct response with document fields or wrapped in data/message structure",
+													"    const hasDirectFields = jsonData.hasOwnProperty('id') || ",
+													"                           jsonData.hasOwnProperty('documentId') || ",
+													"                           jsonData.hasOwnProperty('DocumentID') ||",
+													"                           jsonData.hasOwnProperty('docId') ||",
+													"                           jsonData.hasOwnProperty('ID');",
+													"    ",
+													"    const hasNestedStructure = jsonData.hasOwnProperty('data') || ",
+													"                               jsonData.hasOwnProperty('message');",
+													"    ",
+													"    pm.expect(hasDirectFields || hasNestedStructure, \"Response should have document ID field or nested data structure\").to.be.true;",
+													"});",
+													"",
+													"// ============================================",
+													"// DOCUMENT ID EXTRACTION",
+													"// ============================================",
+													"",
+													"pm.test(\"Document ID is extracted and saved to environment variable\", function () {",
+													"    const jsonData = pm.response.json();",
+													"    let documentId = null;",
+													"    ",
+													"    // Define possible field names for document ID",
+													"    const possibleIdFields = ['documentId', 'DocumentID', 'docId', 'id', 'ID'];",
+													"    ",
+													"    // Function to find document ID in an object",
+													"    function findDocumentId(obj) {",
+													"        if (!obj || typeof obj !== 'object') return null;",
+													"        ",
+													"        for (let field of possibleIdFields) {",
+													"            if (obj.hasOwnProperty(field) && obj[field] !== null && obj[field] !== undefined) {",
+													"                return obj[field];",
+													"            }",
+													"        }",
+													"        return null;",
+													"    }",
+													"    ",
+													"    // Try to find document ID in direct response",
+													"    documentId = findDocumentId(jsonData);",
+													"    ",
+													"    // If not found, check nested structures",
+													"    if (documentId === null && jsonData.data) {",
+													"        // Handle {message: \"\", data: {...}} structure",
+													"        if (typeof jsonData.data === 'object' && !Array.isArray(jsonData.data)) {",
+													"            documentId = findDocumentId(jsonData.data);",
+													"        }",
+													"        // Handle {data: [{...}]} array structure - get first item",
+													"        else if (Array.isArray(jsonData.data) && jsonData.data.length > 0) {",
+													"            documentId = findDocumentId(jsonData.data[0]);",
+													"        }",
+													"    }",
+													"    ",
+													"    // Check for result/response nested structures as well",
+													"    if (documentId === null && jsonData.result) {",
+													"        documentId = findDocumentId(jsonData.result);",
+													"    }",
+													"    ",
+													"    if (documentId === null && jsonData.response) {",
+													"        documentId = findDocumentId(jsonData.response);",
+													"    }",
+													"    ",
+													"    // Validate and save the document ID",
+													"    pm.expect(documentId, \"Document ID should be found in response\").to.not.be.null;",
+													"    ",
+													"    // Save to environment variable",
+													"    pm.environment.set(\"documentId\", documentId);",
+													"    ",
+													"    // Log the saved document ID",
+													"    console.log(\"Document ID saved to environment variable 'documentId':\", documentId);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"id": "4001744a-4dc8-4050-b853-10060202addb",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											},
+											{
+												"key": "file",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "programId",
+													"value": "59",
+													"type": "text",
+													"uuid": "2f35f915-ce2c-46ee-8db1-44c57918ecfa",
+													"disabled": true
+												},
+												{
+													"key": "title",
+													"value": "Documents upload testing",
+													"type": "text",
+													"uuid": "32588c85-f9c9-4a69-892d-be5b4730b0d1"
+												},
+												{
+													"key": "description",
+													"value": "Documents upload testing",
+													"type": "text",
+													"uuid": "a32ef042-6050-4a76-be34-2d5cb8e741b6"
+												},
+												{
+													"key": "file",
+													"type": "file",
+													"uuid": "f2ae3d49-a92a-4bf7-82f1-09c5a5b9ac0d",
+													"src": "/C:/Users/srika/Downloads/AppID_10_dminond-nova-edu (1).pdf"
+												}
+											]
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}/documents"
+									},
+									"response": []
+								},
+								{
+									"name": "Download_documents",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "86a8b99d-1e51-41f8-bfd5-8c243cdd249c",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"pm.test(\"Response time is less than 200ms\", function () {\r",
+													"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"id": "8db0dafb-10c1-497a-a1ce-81c6ff9364cd",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{baseUrl}}/api/programs/{{programId}}/documents/{{documentId}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Update_documents",
+									"id": "d9eab56d-2228-4220-9584-22f09639fe41",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "programId",
+													"value": "59",
+													"type": "text",
+													"uuid": "8734c30a-6e5a-4648-bcfa-4d381485b88f"
+												},
+												{
+													"key": "title",
+													"value": "updating the document",
+													"type": "text",
+													"uuid": "553a7232-35fb-41df-9508-28c656c237e6"
+												},
+												{
+													"key": "description",
+													"value": "updating the document",
+													"type": "text",
+													"uuid": "fc96b00f-e358-4ab3-9158-9cb5c155c96a"
+												},
+												{
+													"key": "file",
+													"type": "file",
+													"uuid": "c4a4efde-cfcd-403c-beaf-b14058db1dbe",
+													"src": "/C:/Users/srika/Downloads/AppID_8_azarrinpar-ufl-edu (1).pdf"
+												},
+												{
+													"key": "documentId",
+													"value": "19",
+													"type": "text",
+													"uuid": "6502d69d-d7ca-4e5e-b6a0-9087c50636db"
+												}
+											]
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}/documents/{{documentId}}"
+									},
+									"response": []
+								}
+							],
+							"id": "6251d1cb-425e-42f2-98d8-9904129ced78"
+						},
+						{
+							"name": "Program Eligibility",
+							"item": [
+								{
+									"name": "List_Eligibilities",
+									"id": "b37f9aa8-ccb3-465b-a5e7-851a89821dcd",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{baseUrl}}/api/programs/59/eligibility"
+									},
+									"response": []
+								},
+								{
+									"name": "Save_Eligibilities",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "fa3ce9c5-43de-4ca2-8b00-0e804e367428",
+												"exec": [
+													"// Test 1: Status code validation (200 or 201)",
+													"pm.test(\"Status code is 200 or 201\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+													"});",
+													"",
+													"// Test 2: Validate response is valid JSON",
+													"pm.test(\"Response is valid JSON\", function () {",
+													"    pm.response.to.be.json;",
+													"});",
+													"",
+													"// Test 3: Response time is under 2000ms",
+													"pm.test(\"Response time is under 2000ms\", function () {",
+													"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+													"});",
+													"",
+													"// Test 4 & 5: Extract eligibility ID and save to environment variable",
+													"pm.test(\"Eligibility ID is extracted and saved\", function () {",
+													"    const jsonData = pm.response.json();",
+													"    let eligibilityId = null;",
+													"    ",
+													"    // Helper function to find eligibility ID from an object",
+													"    function findEligibilityId(obj) {",
+													"        if (!obj || typeof obj !== 'object') return null;",
+													"        ",
+													"        // Check common field names for eligibility ID",
+													"        const possibleKeys = ['eligibilityId', 'EligibilityID', 'id', 'ID'];",
+													"        for (let key of possibleKeys) {",
+													"            if (obj[key] !== undefined && obj[key] !== null) {",
+													"                return obj[key];",
+													"            }",
+													"        }",
+													"        return null;",
+													"    }",
+													"    ",
+													"    // Handle nested data object structure: {message: \"\", data: {...}}",
+													"    if (jsonData.data) {",
+													"        // If data is an array, get ID from first element",
+													"        if (Array.isArray(jsonData.data)) {",
+													"            if (jsonData.data.length > 0) {",
+													"                eligibilityId = findEligibilityId(jsonData.data[0]);",
+													"            }",
+													"        } else {",
+													"            // data is an object",
+													"            eligibilityId = findEligibilityId(jsonData.data);",
+													"        }",
+													"    } ",
+													"    // Handle direct object or array response",
+													"    else if (Array.isArray(jsonData)) {",
+													"        if (jsonData.length > 0) {",
+													"            eligibilityId = findEligibilityId(jsonData[0]);",
+													"        }",
+													"    } else {",
+													"        // Direct object response",
+													"        eligibilityId = findEligibilityId(jsonData);",
+													"    }",
+													"    ",
+													"    // Validate and save the eligibility ID",
+													"    pm.expect(eligibilityId, \"Eligibility ID should be present in response\").to.not.be.null;",
+													"    ",
+													"    if (eligibilityId) {",
+													"        pm.environment.set(\"eligibilityId\", eligibilityId);",
+													"        console.log(\"Saved eligibilityId to environment variable:\", eligibilityId);",
+													"    }",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"id": "ba47f6f8-c921-4a8e-8cee-5bebbdd4c599",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"applicantTypes\": [\r\n    \"Educational Institutions\",\r\n    \"For-profit Companies\",\r\n    \"Government Agencies\",\r\n    \"Individuals\",\r\n    \"Non-profit Organizations\",\r\n    \"Startups\",\r\n    \"Community Organizations\"\r\n  ],\r\n  \"status\": \"Draft\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}/eligibility"
+									},
+									"response": []
+								},
+								{
+									"name": "Update_eligibilities",
+									"id": "34198a9b-c8b3-40cc-841e-921a6b5cbd39",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"applicantTypes\": [\r\n    \"Educational Institutions\",\r\n    \"For-profit Companies\",\r\n    \"Government Agencies\",\r\n    \"Individuals\"\r\n  ],\r\n  \"status\": \"Draft\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}/eligibility"
+									},
+									"response": []
+								}
+							],
+							"id": "c3be719e-6844-4a8e-97bb-9bd3b9b1f7fb"
+						},
+						{
+							"name": "Program Funding",
+							"item": [
+								{
+									"name": "New Request",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "76766ddf-9d16-4961-b8a2-1f890e2e6d3a",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"Response is a JSON array\", function () {",
+													"    const jsonData = pm.response.json();",
+													"    pm.expect(jsonData).to.be.an('array');",
+													"});",
+													"",
+													"pm.test(\"Response time is under 2000ms\", function () {",
+													"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "c1b0907c-a0d0-4440-b847-498fd766e22a",
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"id": "cfe980e0-7656-41e9-ac62-6dbecb6b05d0",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{baseUrl}}/api/programs/{{programId}}/funding"
+									},
+									"response": []
+								},
+								{
+									"name": "Creating_Fund",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "40b1d87d-9f75-4735-a07b-6b9d37e2de41",
+												"exec": [
+													"// Parse response once",
+													"let data;",
+													"pm.test(\"Response is valid JSON\", () => {",
+													"    data = pm.response.json();",
+													"});",
+													"",
+													"// Status code check (handles both Create & Get APIs)",
+													"pm.test(\"Status code is valid\", () => {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+													"});",
+													"",
+													"// Response time check",
+													"pm.test(\"Response time < 2000ms\", () => {",
+													"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+													"});",
+													"",
+													"// If CREATE API (201)",
+													"if (pm.response.code === 201) {",
+													"    pm.test(\"Create response structure is valid\", () => {",
+													"        pm.expect(data).to.have.keys(\"message\", \"data\");",
+													"        pm.expect(data.data).to.include.keys(",
+													"            \"FundingID\",",
+													"            \"ProgramID\",",
+													"            \"TotalAmount\",",
+													"            \"FundingType\"",
+													"        );",
+													"",
+													"        pm.expect(data.data.FundingID).to.be.a(\"number\");",
+													"        pm.expect(data.data.ProgramID).to.be.a(\"number\");",
+													"        pm.expect(data.data.TotalAmount).to.be.a(\"number\");",
+													"    });",
+													"}",
+													"",
+													"// If GET/LIST API (200)",
+													"if (pm.response.code === 200) {",
+													"    pm.test(\"List response is an array\", () => {",
+													"        pm.expect(data).to.be.an(\"array\");",
+													"    });",
+													"}",
+													"",
+													"// Extract and save FundingID to environment variable",
+													"let fundingId;",
+													"if (pm.response.code === 201) {",
+													"    // Create API: extract from data.data.FundingID",
+													"    fundingId = data.data.FundingID;",
+													"} else if (pm.response.code === 200 && data.length > 0) {",
+													"    // List API: extract from first item in array",
+													"    fundingId = data[0].FundingID;",
+													"}",
+													"",
+													"if (fundingId) {",
+													"    pm.environment.set(\"fundingId\", fundingId);",
+													"    console.log(\"Saved fundingId:\", fundingId);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "701a95d1-c5d6-4821-994d-54831643c717",
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"id": "4e66de9d-2b65-45b0-9035-1c67e06643ee",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"totalAmount\": 344541687415,\r\n  \"FundingType\": \"recurring\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}/funding"
+									},
+									"response": []
+								},
+								{
+									"name": "New Request",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "f8f4c3e6-4a4d-4e19-897d-0afc7c916031",
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "36d16aa4-df85-455c-a8a8-605874b8f16a",
+												"exec": [],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"id": "2c4bc09f-2cfe-47e9-be91-909f1f7ea092",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"totalAmount\": 344541687415,\r\n  \"FundingType\": \"recurring\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}/funding"
+									},
+									"response": []
+								},
+								{
+									"name": "New Request",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "8df1f67d-d261-4922-9479-49f5d8b93ca8",
+												"exec": [
+													"// Visualization Script",
+													"// Visualization Script",
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"Response is a JSON object\", function () {",
+													"    const jsonData = pm.response.json();",
+													"    pm.expect(jsonData).to.be.an('object');",
+													"});",
+													"",
+													"pm.test(\"Response contains success message\", function () {",
+													"    const jsonData = pm.response.json();",
+													"    pm.expect(jsonData).to.have.property('message');",
+													"    pm.expect(jsonData.message).to.be.a('string');",
+													"    pm.expect(jsonData.message.toLowerCase()).to.include('deleted');",
+													"});",
+													"",
+													"pm.test(\"Response time is under 2000ms\", function () {",
+													"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "9ac61a7d-e79e-4bc3-8697-87b9dc1b3d16",
+												"exec": [],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"id": "5712f3bb-eb61-46b8-a00c-50ee78708ada",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}/funding/{{fundingId}}"
+									},
+									"response": []
+								}
+							],
+							"id": "ec6281fb-2e1f-47b9-a144-1b330a28115d"
+						},
+						{
+							"name": "Program Timeline",
+							"item": [
+								{
+									"name": "Get_Program_Timeline",
+									"id": "2600cfd9-0491-4c81-88f0-eaab8ded501b",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline"
+									},
+									"response": []
+								},
+								{
+									"name": "Create_Timeline",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "49b1fa78-8fa8-4919-8081-81e061013c1b",
+												"exec": [
+													"// Parse the JSON response",
+													"const jsonData = pm.response.json();",
+													"",
+													"// Extract the TimelineID from the response (using correct PascalCase)",
+													"const timelineID = jsonData.TimelineID;",
+													"",
+													"// Save timelineID as an environment variable",
+													"pm.environment.set(\"timelineID\", timelineID);",
+													"",
+													"// Console log to confirm the value was saved",
+													"console.log(\"timelineID saved to environment variable:\", timelineID);",
+													"",
+													"// Test: Status code is 200 or 201",
+													"pm.test(\"Status code is successful (200 or 201)\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+													"});",
+													"",
+													"// Test: Response has JSON body",
+													"pm.test(\"Response has JSON body\", function () {",
+													"    pm.response.to.be.json;",
+													"});",
+													"",
+													"// Test: TimelineID exists and is a number",
+													"pm.test(\"TimelineID exists and is a number\", function () {",
+													"    pm.expect(jsonData.TimelineID).to.exist;",
+													"    pm.expect(jsonData.TimelineID).to.be.a('number');",
+													"});",
+													"",
+													"// Test: timelineID environment variable was set correctly",
+													"pm.test(\"timelineID environment variable was set correctly\", function () {",
+													"    pm.expect(pm.environment.get(\"timelineID\")).to.eql(jsonData.TimelineID);",
+													"});",
+													"",
+													"// Test: Response contains expected fields",
+													"pm.test(\"Response contains expected fields\", function () {",
+													"    pm.expect(jsonData).to.have.property('TimelineID');",
+													"    pm.expect(jsonData).to.have.property('ProgramID');",
+													"    pm.expect(jsonData).to.have.property('Title');",
+													"    pm.expect(jsonData).to.have.property('StartDate');",
+													"    pm.expect(jsonData).to.have.property('StartTime');",
+													"    pm.expect(jsonData).to.have.property('EndDate');",
+													"    pm.expect(jsonData).to.have.property('EndTime');",
+													"    pm.expect(jsonData).to.have.property('Notes');",
+													"    pm.expect(jsonData).to.have.property('StartAt');",
+													"    pm.expect(jsonData).to.have.property('EndAt');",
+													"    pm.expect(jsonData).to.have.property('DurationMinutes');",
+													"    pm.expect(jsonData).to.have.property('WindowStatus');",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"id": "b134f5b0-0e90-4b05-b961-764103c30289",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\"title\":\"Custom Date Range\",\"startDate\":\"12-26-2025\",\"startTime\":\"09:00:00\",\"endDate\":\"12-29-2025\",\"endTime\":\"23:59:00\",\"notes\":\"12-26-2025 09:00 - 12-29-2025 23:59\",\"status\":\"Draft\"}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline"
+									},
+									"response": []
+								},
+								{
+									"name": "Timeline_with_SubPeriods",
+									"id": "bcca5a6d-1d34-4785-b040-a158143c0f0b",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline/with-sub-periods"
+									},
+									"response": []
+								},
+								{
+									"name": "Update_Timeline",
+									"id": "cfb1433c-9580-4b94-ace9-6826670a1972",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\"title\":\"Custom Date Range\",\"startDate\":\"12-26-2025\",\"startTime\":\"09:00:00\",\"endDate\":\"12-29-2025\",\"endTime\":\"23:59:00\",\"notes\":\"12-26-2025 09:00 - 12-29-2025 23:59\",\"status\":\"Active\"}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline/{{timelineID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete_timeline",
+									"id": "adb5d134-5b0e-4e11-a3aa-47ba3f9ed881",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline/{{timelineID}}"
+									},
+									"response": []
+								}
+							],
+							"id": "354c0571-a068-44fa-b406-952a19f2816a"
+						},
+						{
+							"name": "Program Evaluation",
+							"item": [
+								{
+									"name": "Get_evaluations",
+									"id": "a335c109-88ed-4619-8f41-00a148ea9495",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{baseUrl}}/api/programs/{{programId}}/evaluations"
+									},
+									"response": []
+								},
+								{
+									"name": "New Request",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "35c0aa31-b9d4-41dd-bde0-344362f9fab1",
+												"exec": [
+													"const response = pm.response.json();",
+													"pm.environment.set(\"evaluationId\", response.EvaluationID);",
+													"",
+													"// 1. Status code validation",
+													"pm.test(\"Status code is 201 for successful creation\", function () {",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"",
+													"// 2. Response time check",
+													"pm.test(\"Response time is under 2000ms\", function () {",
+													"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+													"});",
+													"",
+													"// 3. Validate response is JSON format",
+													"pm.test(\"Response is valid JSON\", function () {",
+													"    pm.response.to.be.json;",
+													"});",
+													"",
+													"// 4. Check that response contains EvaluationID (required for environment variable)",
+													"pm.test(\"Response contains EvaluationID field\", function () {",
+													"    pm.expect(response).to.have.property(\"EvaluationID\");",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"id": "464499e7-d916-4c2a-875f-d9adb03b1a97",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"question\": \"hii\",\n    \"isRequired\": \"Yes\",\n    \"status\": \"Draft\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}/evaluations"
+									},
+									"response": []
+								},
+								{
+									"name": "New Request",
+									"id": "516645c8-0ab2-454d-a440-34c54bcc80d9",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"question\": \"hello\",\r\n  \"isRequired\": \"Yes\",\r\n  \"status\": \"Draft\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}/evaluations/{{evaluationId}}"
+									},
+									"response": []
+								},
+								{
+									"name": "New Request",
+									"id": "9b6c5edd-89a0-4cd1-8668-7aca40949fb3",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{baseUrl}}/api/programs/{{programId}}/evaluations/{{evaluationId}}"
+									},
+									"response": []
+								}
+							],
+							"id": "4a390abf-90b6-4334-86e4-38e068f2b07e"
+						},
+						{
+							"name": "ProgramDates",
+							"item": [
+								{
+									"name": "Get_ProgramDate",
+									"id": "1eb2ab5e-396e-4113-a365-25a300d9693b",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{baseUrl}}/api/programs/{{programId}}/dates"
+									},
+									"response": []
+								},
+								{
+									"name": "Create_ProgramDate",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "8752940d-1eac-41cc-b487-6392678af23c",
+												"exec": [
+													"// Parse the JSON response",
+													"const jsonData = pm.response.json();",
+													"",
+													"// Extract ProgramDateID and save as environment variable",
+													"const programDateId = jsonData.ProgramDateID;",
+													"pm.environment.set(\"dateid\", programDateId);",
+													"",
+													"// Console log to confirm the value was saved",
+													"console.log(\"ProgramDateID saved as 'dateid' environment variable:\", programDateId);",
+													"",
+													"// Test 1: Status code is 200",
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"// Test 2: Response has JSON body",
+													"pm.test(\"Response has JSON body\", function () {",
+													"    pm.response.to.be.json;",
+													"});",
+													"",
+													"// Test 3: ProgramDateID exists and is a number",
+													"pm.test(\"ProgramDateID exists and is a number\", function () {",
+													"    pm.expect(jsonData).to.have.property(\"ProgramDateID\");",
+													"    pm.expect(jsonData.ProgramDateID).to.be.a(\"number\");",
+													"});",
+													"",
+													"// Test 4: Verify dateid environment variable was set correctly",
+													"pm.test(\"Environment variable 'dateid' was set correctly\", function () {",
+													"    const savedDateId = pm.environment.get(\"dateid\");",
+													"    pm.expect(savedDateId).to.eql(jsonData.ProgramDateID);",
+													"});",
+													"",
+													"// Test 5: Response contains all expected fields",
+													"pm.test(\"Response contains all expected fields\", function () {",
+													"    pm.expect(jsonData).to.have.property(\"ProgramDateID\");",
+													"    pm.expect(jsonData).to.have.property(\"ProgramID\");",
+													"    pm.expect(jsonData).to.have.property(\"StartDate\");",
+													"    pm.expect(jsonData).to.have.property(\"StartTime\");",
+													"    pm.expect(jsonData).to.have.property(\"EndDate\");",
+													"    pm.expect(jsonData).to.have.property(\"EndTime\");",
+													"    pm.expect(jsonData).to.have.property(\"CreatedDate\");",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"id": "6fd6314c-d8fa-45f8-88f4-d228957c7094",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\"startDate\":\"12-26-2025\",\"startTime\":\"09:00:00\",\"endDate\":\"12-31-2025\",\"endTime\":\"23:59:00\",\"notes\":null,\"status\":\"Draft\"}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}/dates"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete_ProgramDate",
+									"id": "320d5b56-cf76-4c49-8ff0-4a1e4e6d7e42",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{baseUrl}}/api/programs/{{programId}}/dates/{{dateid}}"
+									},
+									"response": []
+								}
+							],
+							"id": "4dd15a3d-681c-42c7-baac-b2aa04622233"
+						},
+						{
+							"name": "Program_Sub_Periods",
+							"item": [
+								{
+									"name": "Update_Subperiod",
+									"id": "12fb59c2-7b0e-4c22-b92f-fa78d1be6cee",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"title\": \"Phase 1\",\r\n  \"startDate\": \"12-26-2025\",\r\n  \"startTime\": \"09:00:00\",\r\n  \"endDate\": \"12-30-2025\",\r\n  \"endTime\": \"23:59:00\",\r\n  \"notes\": null,\r\n  \"sortOrder\": null\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline/{{timelineID}}/sub-periods/{{subPeriodId}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Get_SubPeriod",
+									"id": "d8942bde-6332-4276-9435-ab0713265e01",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline/{{timelineID}}/sub-periods"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete_SubPeriod",
+									"id": "5dee4f0d-f2fc-4a83-9ac7-33b93508f50a",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline/{{timelineID}}/sub-periods/{{subPeriodId}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Create _Subperiod",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "b8508697-1313-4554-ae95-c34c1a1f73c8",
+												"exec": [
+													"// Parse the JSON response",
+													"const jsonData = pm.response.json();",
+													"",
+													"// Extract SubPeriodID and save to environment variable",
+													"const subPeriodId = jsonData.SubPeriodID;",
+													"pm.environment.set(\"subPeriodId\", subPeriodId);",
+													"",
+													"// Log confirmation message",
+													"console.log(\"SubPeriodID saved to environment variable 'subPeriodId':\", subPeriodId);"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"id": "4f1c884a-927e-4df8-9b3f-5a6b489eee59",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"title\": \"Phase 1\",\r\n  \"startDate\": \"12-26-2025\",\r\n  \"startTime\": \"09:00:00\",\r\n  \"endDate\": \"12-29-2025\",\r\n  \"endTime\": \"23:59:00\",\r\n  \"notes\": null,\r\n  \"sortOrder\": null\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline/{{timelineID}}/sub-periods"
+									},
+									"response": []
+								}
+							],
+							"id": "895d47ab-4c39-4abb-be48-0706c1ca1efb"
+						},
+						{
+							"name": "Create_SubPeriod",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "99fe9560-0932-4587-91cb-649d65fe90d4",
+										"exec": [
+											"// ============================================",
+											"// PRE-REQUEST SCRIPT: Build Create Sub-Period Request Body",
+											"// ============================================",
+											"",
+											"// Build the request body for sub-period",
+											"const requestBody = {",
+											"    title: \"Phase 1\",",
+											"    startDate: \"12-26-2025\",",
+											"    startTime: \"09:00:00\",",
+											"    endDate: \"12-29-2025\",",
+											"    endTime: \"23:59:00\",",
+											"    notes: null,",
+											"    sortOrder: null",
+											"};",
+											"",
+											"// Set the request body - ensure it's raw JSON",
+											"pm.request.body.mode = 'raw';",
+											"pm.request.body.options = { raw: { language: 'json' } };",
+											"pm.request.body.raw = JSON.stringify(requestBody);",
+											"",
+											"// Log the request body for debugging",
+											"console.log(\"Create Sub-Period Request Body:\", JSON.stringify(requestBody, null, 2));"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "cf0cadd7-f612-416e-9d0d-ce8e2e8b033a",
+										"exec": [
+											"// ============================================",
+											"// POST-RESPONSE SCRIPT: Create Sub-Period Tests",
+											"// ============================================",
+											"",
+											"// Test 1: Status code validation (200 or 201)",
+											"pm.test(\"Status code is 200 or 201\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+											"});",
+											"",
+											"// Test 2: Validate response is valid JSON",
+											"pm.test(\"Response is valid JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"// Test 3: Check response time is under 2000ms",
+											"pm.test(\"Response time is under 2000ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+											"});",
+											"",
+											"// Test 4: Validate response structure",
+											"pm.test(\"Response has expected structure\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    ",
+											"    // Check for common response structures",
+											"    const hasDirectFields = jsonData.hasOwnProperty('id') || ",
+											"                           jsonData.hasOwnProperty('subPeriodId') || ",
+											"                           jsonData.hasOwnProperty('SubPeriodID') ||",
+											"                           jsonData.hasOwnProperty('subPeriodID');",
+											"    ",
+											"    const hasNestedStructure = jsonData.hasOwnProperty('data') || ",
+											"                               jsonData.hasOwnProperty('message');",
+											"    ",
+											"    pm.expect(hasDirectFields || hasNestedStructure, \"Response should have sub-period ID field or nested data structure\").to.be.true;",
+											"});",
+											"",
+											"// ============================================",
+											"// SUB-PERIOD ID EXTRACTION",
+											"// ============================================",
+											"",
+											"pm.test(\"Sub-Period ID is extracted and saved to environment variable\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    let subPeriodId = null;",
+											"    ",
+											"    // Define possible field names for sub-period ID",
+											"    const possibleIdFields = ['subPeriodId', 'SubPeriodID', 'subPeriodID', 'id', 'ID', 'subperiodId'];",
+											"    ",
+											"    // Function to find sub-period ID in an object",
+											"    function findSubPeriodId(obj) {",
+											"        if (!obj || typeof obj !== 'object') return null;",
+											"        ",
+											"        for (let field of possibleIdFields) {",
+											"            if (obj.hasOwnProperty(field) && obj[field] !== null && obj[field] !== undefined) {",
+											"                return obj[field];",
+											"            }",
+											"        }",
+											"        return null;",
+											"    }",
+											"    ",
+											"    // Try to find sub-period ID in direct response",
+											"    subPeriodId = findSubPeriodId(jsonData);",
+											"    ",
+											"    // If not found, check nested structures",
+											"    if (subPeriodId === null && jsonData.data) {",
+											"        // Handle {message: \"\", data: {...}} structure",
+											"        if (typeof jsonData.data === 'object' && !Array.isArray(jsonData.data)) {",
+											"            subPeriodId = findSubPeriodId(jsonData.data);",
+											"        }",
+											"        // Handle {data: [{...}]} array structure - get first item",
+											"        else if (Array.isArray(jsonData.data) && jsonData.data.length > 0) {",
+											"            subPeriodId = findSubPeriodId(jsonData.data[0]);",
+											"        }",
+											"    }",
+											"    ",
+											"    // Check for result/response nested structures as well",
+											"    if (subPeriodId === null && jsonData.result) {",
+											"        subPeriodId = findSubPeriodId(jsonData.result);",
+											"    }",
+											"    ",
+											"    if (subPeriodId === null && jsonData.response) {",
+											"        subPeriodId = findSubPeriodId(jsonData.response);",
+											"    }",
+											"    ",
+											"    // Validate and save the sub-period ID",
+											"    pm.expect(subPeriodId, \"Sub-Period ID should be found in response\").to.not.be.null;",
+											"    ",
+											"    // Save to environment variable",
+											"    pm.environment.set(\"subPeriodId\", subPeriodId);",
+											"    ",
+											"    // Log the saved sub-period ID",
+											"    console.log(\"Sub-Period ID saved to environment variable 'subPeriodId':\", subPeriodId);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "fbf8e429-18b2-4eee-abd1-291751242fd8",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/programs/{{programId}}/timeline/{{timelineID}}/sub-periods"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Programs_by_Divisions",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6ac416f5-9766-49e7-a360-43cd9590a975",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response is a JSON array\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an('array');",
+											"});",
+											"",
+											"pm.test(\"Response time is under 2000ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1f650114-5756-4f7c-8cea-8ee44853bae3",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "3faedeb3-0174-4eff-9468-2a4c1db75f2c",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/programs/division/{{divisionId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_all_KPI_Programs",
+							"id": "3de0da5a-4914-4c1c-b108-9976c658e02d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/programs/kpis?divisionId={{divisionId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"programs",
+										"kpis"
+									],
+									"query": [
+										{
+											"key": "divisionId",
+											"value": "{{divisionId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get_all_Programs",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "23c96bf0-77d5-4700-a473-b75f64cf1838",
+										"exec": [
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response is a JSON array\", function () {",
+											"    pm.expect(pm.response.json()).to.be.an('array');",
+											"});",
+											"",
+											"pm.test(\"Response time is under 2000ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+											"});",
+											"",
+											"pm.test(\"Extract and save all IDs to environment variables\", function () {",
+											"    const data = pm.response.json();",
+											"    pm.expect(data.length).to.be.greaterThan(0, \"Response should have at least one program\");",
+											"    ",
+											"    const program = data[0];",
+											"    ",
+											"    // Save ProgramID",
+											"    pm.environment.set(\"programId\", program.ProgramID);",
+											"    console.log(\"programId:\", program.ProgramID);",
+											"    ",
+											"    // Save nested IDs if they exist",
+											"    if (program.Contacts && program.Contacts.length > 0) {",
+											"        pm.environment.set(\"contactsId\", program.Contacts[0].ContactID);",
+											"        console.log(\"contactsId:\", program.Contacts[0].ContactID);",
+											"    }",
+											"    if (program.Eligibility && program.Eligibility.length > 0) {",
+											"        pm.environment.set(\"eligibilityId\", program.Eligibility[0].EligibilityID);",
+											"        console.log(\"eligibilityId:\", program.Eligibility[0].EligibilityID);",
+											"    }",
+											"    if (program.Evaluations && program.Evaluations.length > 0) {",
+											"        pm.environment.set(\"evaluationsId\", program.Evaluations[0].EvaluationID);",
+											"        console.log(\"evaluationsId:\", program.Evaluations[0].EvaluationID);",
+											"    }",
+											"    if (program.Funding && program.Funding.length > 0) {",
+											"        pm.environment.set(\"fundingId\", program.Funding[0].FundingID);",
+											"        console.log(\"fundingId:\", program.Funding[0].FundingID);",
+											"    }",
+											"    if (program.Timeline && program.Timeline.length > 0) {",
+											"        pm.environment.set(\"timelineId\", program.Timeline[0].TimelineID);",
+											"        console.log(\"timelineId:\", program.Timeline[0].TimelineID);",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "61164ba2-c040-4b3f-97a6-5da76b51e9de",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "77a046b9-1518-400c-a94b-b3de2265cebc",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/programs/{{id}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Create_Program",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1a93b2a0-fd04-45c3-ba62-bc5490b9c468",
+										"exec": [
+											"// ============================================",
+											"// PRE-REQUEST SCRIPT: Build Create Program Request Body",
+											"// ============================================",
+											"",
+											"// Build the request body with basic program information only",
+											"const requestBody = {",
+											"    programId: null,",
+											"    name: \"Testing Program \" + new Date().getTime(),",
+											"    grantCode: null,",
+											"    summary: \"Program created via API testing\",",
+											"    description: \"This program was created through automated API testing\",",
+											"    status: \"Draft\"",
+											"};",
+											"",
+											"// Set the request body - ensure it's raw JSON",
+											"pm.request.body.mode = 'raw';",
+											"pm.request.body.options = { raw: { language: 'json' } };",
+											"pm.request.body.raw = JSON.stringify(requestBody);",
+											"",
+											"// Log the request body for debugging",
+											"console.log(\"Create Program Request Body:\", JSON.stringify(requestBody, null, 2));"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "46e7cce6-bac2-4c48-b853-6b880edc4135",
+										"exec": [
+											"// ============================================",
+											"// POST-RESPONSE SCRIPT: Create Program Tests",
+											"// ============================================",
+											"",
+											"// Test 1: Status code validation (200 or 201)",
+											"pm.test(\"Status code is 200 or 201\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+											"});",
+											"",
+											"// Test 2: Validate response is valid JSON",
+											"pm.test(\"Response is valid JSON\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"// Test 3: Check response time is under 3000ms",
+											"pm.test(\"Response time is under 3000ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);",
+											"});",
+											"",
+											"// Test 4: Validate response structure",
+											"pm.test(\"Response has expected structure\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    ",
+											"    // Check for common response structures",
+											"    const hasDirectFields = jsonData.hasOwnProperty('id') || ",
+											"                           jsonData.hasOwnProperty('programId') || ",
+											"                           jsonData.hasOwnProperty('ProgramID');",
+											"    ",
+											"    const hasNestedStructure = jsonData.hasOwnProperty('data') || ",
+											"                               jsonData.hasOwnProperty('message');",
+											"    ",
+											"    pm.expect(hasDirectFields || hasNestedStructure, \"Response should have program ID field or nested data structure\").to.be.true;",
+											"});",
+											"",
+											"// ============================================",
+											"// PROGRAM ID EXTRACTION",
+											"// ============================================",
+											"",
+											"pm.test(\"Program ID is extracted and saved to environment variable\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    let programId = null;",
+											"    ",
+											"    // Define possible field names for program ID",
+											"    const possibleIdFields = ['programId', 'ProgramID', 'programID', 'id', 'ID'];",
+											"    ",
+											"    // Function to find program ID in an object",
+											"    function findProgramId(obj) {",
+											"        if (!obj || typeof obj !== 'object') return null;",
+											"        ",
+											"        for (let field of possibleIdFields) {",
+											"            if (obj.hasOwnProperty(field) && obj[field] !== null && obj[field] !== undefined) {",
+											"                return obj[field];",
+											"            }",
+											"        }",
+											"        return null;",
+											"    }",
+											"    ",
+											"    // Try to find program ID in direct response",
+											"    programId = findProgramId(jsonData);",
+											"    ",
+											"    // If not found, check nested structures",
+											"    if (programId === null && jsonData.data) {",
+											"        // Handle {message: \"\", data: {...}} structure",
+											"        if (typeof jsonData.data === 'object' && !Array.isArray(jsonData.data)) {",
+											"            programId = findProgramId(jsonData.data);",
+											"        }",
+											"        // Handle {data: [{...}]} array structure - get first item",
+											"        else if (Array.isArray(jsonData.data) && jsonData.data.length > 0) {",
+											"            programId = findProgramId(jsonData.data[0]);",
+											"        }",
+											"    }",
+											"    ",
+											"    // Check for result/response nested structures as well",
+											"    if (programId === null && jsonData.result) {",
+											"        programId = findProgramId(jsonData.result);",
+											"    }",
+											"    ",
+											"    if (programId === null && jsonData.response) {",
+											"        programId = findProgramId(jsonData.response);",
+											"    }",
+											"    ",
+											"    // Validate and save the program ID",
+											"    pm.expect(programId, \"Program ID should be found in response\").to.not.be.null;",
+											"    ",
+											"    // Save to environment variable",
+											"    pm.environment.set(\"programId\", programId);",
+											"    ",
+											"    // Log the saved program ID",
+											"    console.log(\"Program ID saved to environment variable 'programId':\", programId);",
+											"});",
+											"",
+											"// Test 5: Verify all related entities were linked",
+											"pm.test(\"Program created with all related entities\", function () {",
+											"    const jsonData = pm.response.json();",
+											"    const data = jsonData.data || jsonData;",
+											"    ",
+											"    // Log the created program details",
+											"    console.log(\"Created Program Details:\", JSON.stringify(data, null, 2));",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "d7ecc56a-efe2-4247-bd52-32cdfab2773a",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Testing Program [timestamp]\",\n  \"grantCode\": null,\n  \"summary\": \"Program created via API testing\",\n  \"description\": \"This program was created through automated API testing\",\n  \"status\": \"Draft\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/programs/save/{{divisionId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Update_Program",
+							"id": "2c374692-d52e-4515-8e29-9d9d96cb531d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Testing Program [timestamp]\",\r\n  \"grantCode\": null,\r\n  \"summary\": \"Program created via API testing\",\r\n  \"description\": \"This program was created through automated API testing\",\r\n  \"status\": \"Draft\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/programs/{{programId}}/status"
+							},
+							"response": []
+						}
+					],
+					"id": "e45ebad6-f1d3-49bb-90c7-bfdd35d1e8d6"
+				},
+				{
+					"name": "Forms",
+					"item": [
+						{
+							"name": "Login_Config_Manager",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "52815cc0-c9e5-45e5-9f4a-3d9bd82111cb",
+										"exec": [
+											"let body = pm.response.text().trim();\r",
+											"let json = body.startsWith(\"{\") ? pm.response.json() : {};\r",
+											"let token = (json.token || \"\").trim();\r",
+											"if (!token && /^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$/.test(body)) token = body;\r",
+											"pm.environment.set(\"CM_token\", token);\r",
+											"pm.test(\"Token extracted\", () => pm.expect(token).to.be.a(\"string\").and.not.empty);\r",
+											"\r",
+											"//test"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "f8280617-49f2-4fe9-a2a3-fcc79272550a",
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "bbb7c91d-a70d-403c-85a5-2963acdbc512",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"username\": \"hemanth.naidu@meridianit.com\",\r\n  \"password\": \"dummypassword\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://grants.southindia.cloudapp.azure.com/api/configuration-manager/login"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_forms_by_Programs",
+							"id": "3326c67d-0c22-44a8-b2ca-2cdb642ed54a",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/forms/{{programId}}/forms"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Timelines_Subperiod_forms",
+							"id": "b579b084-1c48-42c8-8f63-cafaba09deb6",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/forms/{{programId}}/{{timelineID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Timeline_subperiod",
+							"id": "4da22651-f98f-48ab-bf8c-0b01590d1939",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/forms/{{programId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Unique_form_statues",
+							"id": "cf41b1c7-4f51-4250-b031-af35ddddba86",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/forms/statuses"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_KPI_forms",
+							"id": "60d68650-bdb5-4115-b209-c0244ffc4ee4",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/forms/kpi-dashboard/{{programId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Full_form_by_ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "67579fc9-4584-4186-b48e-cfe5b11893b5",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "910acffd-44ef-4587-8dc2-987ab3e04f7e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/forms/form/{{formId}}/full"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Section",
+							"id": "126883da-eceb-4a1e-96bd-2f8f837a65ed",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/forms/{{programId}}/sections/{{sectionId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete_Form",
+							"id": "a971df81-8b29-43e3-b05f-4a559b5237d2",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/forms/{{formId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete_a_field_from_a_section",
+							"id": "72326322-e8ee-4e78-b303-67b509dba274",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{baseUrl}}/api/forms/program/{{programId}}/sections/{{sectionId}}/fields/{{fieldId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Create_Form",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4c2cd5c3-470c-4fe4-9b25-28464d1e5eb1",
+										"exec": [
+											"// Parse response JSON",
+											"const jsonData = pm.response.json();",
+											"",
+											"// Test 1: Response status is 200",
+											"pm.test(\"Response status is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// Test 2: Response has valid JSON body",
+											"pm.test(\"Response has valid JSON body\", function () {",
+											"    pm.expect(jsonData).to.be.an(\"object\");",
+											"});",
+											"",
+											"// Test 3: Response has success: true",
+											"pm.test(\"Response has success: true\", function () {",
+											"    pm.expect(jsonData.success).to.eql(true);",
+											"});",
+											"",
+											"// Test 4: Response time is reasonable (under 2000ms)",
+											"pm.test(\"Response time is under 2000ms\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+											"});",
+											"",
+											"// Test 5: NewFormID exists in response.data and is not null/undefined",
+											"pm.test(\"NewFormID exists in response.data and is not null/undefined\", function () {",
+											"    pm.expect(jsonData.data).to.have.property(\"NewFormID\");",
+											"    pm.expect(jsonData.data.NewFormID).to.not.be.null;",
+											"    pm.expect(jsonData.data.NewFormID).to.not.be.undefined;",
+											"});",
+											"",
+											"// Test 6: NewFormID is a valid number",
+											"pm.test(\"NewFormID is a valid number\", function () {",
+											"    pm.expect(jsonData.data.NewFormID).to.be.a(\"number\");",
+											"    pm.expect(Number.isFinite(jsonData.data.NewFormID)).to.be.true;",
+											"});",
+											"",
+											"// Test 7: Version field is present and is a number",
+											"pm.test(\"Version field is present and is a number\", function () {",
+											"    pm.expect(jsonData.data).to.have.property(\"Version\");",
+											"    pm.expect(jsonData.data.Version).to.be.a(\"number\");",
+											"});",
+											"",
+											"// Test 8: IsActive field is present and is a boolean",
+											"pm.test(\"IsActive field is present and is a boolean\", function () {",
+											"    pm.expect(jsonData.data).to.have.property(\"IsActive\");",
+											"    pm.expect(jsonData.data.IsActive).to.be.a(\"boolean\");",
+											"});",
+											"",
+											"// Test 9: Status field is present and is a string",
+											"pm.test(\"Status field is present and is a string\", function () {",
+											"    pm.expect(jsonData.data).to.have.property(\"Status\");",
+											"    pm.expect(jsonData.data.Status).to.be.a(\"string\");",
+											"});",
+											"",
+											"// Test 10: Message field is present",
+											"pm.test(\"Message field is present in response.data\", function () {",
+											"    pm.expect(jsonData.data).to.have.property(\"Message\");",
+											"});",
+											"",
+											"// Test 11: StartDate field is present",
+											"pm.test(\"StartDate field is present in response.data\", function () {",
+											"    pm.expect(jsonData.data).to.have.property(\"StartDate\");",
+											"});",
+											"",
+											"// Extract and save NewFormID as environment variable",
+											"if (jsonData.data && jsonData.data.NewFormID !== null && jsonData.data.NewFormID !== undefined) {",
+											"    pm.environment.set(\"formId\", jsonData.data.NewFormID);",
+											"    console.log(\"formId environment variable set to: \" + jsonData.data.NewFormID);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "6c9ee523-21eb-4218-a0c1-31091c23b887",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"formTitle\": \"Form Testing \",\r\n    \"formDescription\": \"Form Testing Description\",\r\n    \"pages\": [\r\n        {\r\n            \"pageId\": 1500,\r\n            \"pageTitle\": \"Page Title 1\",\r\n            \"pageDescription\": \"Page Title Description\",\r\n            \"sections\": [\r\n                {\r\n                    \"sectionId\": 2025,\r\n                    \"sectionTitle\": \"Section Testing \",\r\n                    \"sectionDescription\": \"Section Testing Description\",\r\n                    \"fields\": [\r\n                        {\r\n                            \"fieldId\": 6979,\r\n                            \"label\": \"Short Text Testing \",\r\n                            \"fieldType\": \"text\",\r\n                            \"order\": 1,\r\n                            \"fieldKey\": \"68f012f2-00b0-43d1-993c-970e88dddcca\"\r\n                        },\r\n                        {\r\n                            \"fieldId\": 6980,\r\n                            \"label\": \"Long Answer Testing\",\r\n                            \"fieldType\": \"textarea\",\r\n                            \"order\": 2,\r\n                            \"fieldKey\": \"e02c3526-f01c-436d-9e3a-b89560d65fb9\"\r\n                        },\r\n                        {\r\n                            \"fieldId\": 6981,\r\n                            \"label\": \"Phone Testing\",\r\n                            \"fieldType\": \"text\",\r\n                            \"order\": 3,\r\n                            \"fieldKey\": \"fa16e2c0-50a5-470b-9daf-d3b0634f748a\"\r\n                        },\r\n                        {\r\n                            \"fieldId\": 6982,\r\n                            \"label\": \"Email Testing \",\r\n                            \"fieldType\": \"email\",\r\n                            \"order\": 4,\r\n                            \"fieldKey\": \"45c97533-7d73-4d3f-8cbd-334efda47f27\"\r\n                        },\r\n                        {\r\n                            \"fieldId\": 6983,\r\n                            \"label\": \"Number Testing\",\r\n                            \"fieldType\": \"number\",\r\n                            \"order\": 5,\r\n                            \"fieldKey\": \"93580a27-b49a-483d-8424-76b33b452479\"\r\n                        },\r\n                        {\r\n                            \"fieldId\": 6984,\r\n                            \"label\": \"Radio\",\r\n                            \"fieldType\": \"radio\",\r\n                            \"order\": 6,\r\n                            \"fieldKey\": \"240a1e37-c4db-4ee3-8ed9-5cf284fdcd7f\",\r\n                            \"options\": [\r\n                                {\r\n                                    \"label\": \"Option 1\",\r\n                                    \"value\": \"Option 1\"\r\n                                },\r\n                                {\r\n                                    \"label\": \"Option 2\",\r\n                                    \"value\": \"Option 2\"\r\n                                }\r\n                            ]\r\n                        },\r\n                        {\r\n                            \"fieldId\": 6985,\r\n                            \"label\": \"Checkbox\",\r\n                            \"fieldType\": \"checkbox\",\r\n                            \"order\": 7,\r\n                            \"fieldKey\": \"e59fb870-02ee-49b3-8459-95d9f18d6b3d\",\r\n                            \"options\": [\r\n                                {\r\n                                    \"label\": \"Option 1\",\r\n                                    \"value\": \"Option 1\"\r\n                                },\r\n                                {\r\n                                    \"label\": \"Option 2\",\r\n                                    \"value\": \"Option 2\"\r\n                                }\r\n                            ]\r\n                        },\r\n                        {\r\n                            \"fieldId\": 6986,\r\n                            \"label\": \"File\",\r\n                            \"fieldType\": \"file\",\r\n                            \"order\": 8,\r\n                            \"fieldKey\": \"d63fd8d0-5856-4463-8149-e9dabaecf06b\"\r\n                        },\r\n                        {\r\n                            \"fieldId\": 6987,\r\n                            \"label\": \"Date\",\r\n                            \"fieldType\": \"date\",\r\n                            \"order\": 9,\r\n                            \"fieldKey\": \"42a255dd-bd79-42b4-990c-5d7bffdf058e\"\r\n                        }\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/forms/create/{{programId}}?publishMode=NOW&formId=504",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"forms",
+										"create",
+										"{{programId}}"
+									],
+									"query": [
+										{
+											"key": "publishMode",
+											"value": "NOW"
+										},
+										{
+											"key": "formId",
+											"value": "504"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"id": "6e4c0f5d-7719-4bec-b7cd-0fdac79aab74"
+				}
+			],
+			"id": "0981d8a5-0e86-47eb-a6f7-e56f39e66e3a",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a125def3-756f-4b8f-8e91-473c7fd45dcc",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "6a5cee5b-f0b0-4301-8c7f-a9ff48153438",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Applicant",
+			"item": [
+				{
+					"name": "Applicant_Dashboard",
+					"item": [
+						{
+							"name": "applicant_login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9b2c0efc-8857-4bb1-bde5-a6717df89178",
+										"exec": [
+											"let body = pm.response.text().trim();\r",
+											"let json = body.startsWith(\"{\") ? pm.response.json() : {};\r",
+											"let token = (json.token || \"\").trim();\r",
+											"if (!token && /^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$/.test(body)) token = body;\r",
+											"pm.environment.set(\"applicant_token\", token);\r",
+											"pm.test(\"Token extracted\", () => pm.expect(token).to.be.a(\"string\").and.not.empty);\r",
+											"\r",
+											"//test\r",
+											"pm.test(\"Authorized as applicant\", function () {\r",
+											"    pm.expect([200, 403]).to.include(pm.response.code);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "9f8fb13d-a2e3-485d-b274-f33cc00ebd30",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"test.applicant1@meridiantechsol.onmicrosoft.com\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/auth/user-login"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_applicant_notifications",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "21253518-14ee-4c59-afde-84298c9e36be",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is below 2000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is an array\", function () {\r",
+											"    let jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.be.an(\"array\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Notifications list is not empty\", function () {\r",
+											"    let jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.length).to.be.greaterThan(0);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Notifications list is not empty\", function () {\r",
+											"    let jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.length).to.be.greaterThan(0);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Each notification has required fields\", function () {\r",
+											"    let jsonData = pm.response.json();\r",
+											"\r",
+											"    jsonData.forEach(item => {\r",
+											"        pm.expect(item).to.have.property(\"NotificationID\");\r",
+											"        pm.expect(item).to.have.property(\"Body\");\r",
+											"        pm.expect(item).to.have.property(\"CreatedDate\");\r",
+											"        pm.expect(item).to.have.property(\"Type\");\r",
+											"        pm.expect(item).to.have.property(\"IsRead\");\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Field data types are correct\", function () {\r",
+											"    let jsonData = pm.response.json();\r",
+											"\r",
+											"    jsonData.forEach(item => {\r",
+											"        pm.expect(item.NotificationID).to.be.a(\"number\");\r",
+											"        pm.expect(item.Body).to.be.a(\"string\");\r",
+											"        pm.expect(item.CreatedDate).to.be.a(\"string\");\r",
+											"        pm.expect(item.Type).to.be.a(\"string\");\r",
+											"        pm.expect(item.IsRead).to.be.a(\"boolean\");\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "21d7aaca-e5db-4331-9646-bdc2e12ab105",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "4c2181ba-1dcd-4a97-973e-46ed63a9ccf0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/dashboard/notifications"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_applicant_draft_applications",
+							"id": "647140d3-d194-4603-a7a2-648c14ad47bb",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/dashboard/drafts"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_upcoming_deadlines",
+							"id": "e81e3952-543c-49d7-bb75-98ba9c77a8af",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/dashboard/deadlines"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_applicant_dashboard_stats",
+							"id": "8ac43054-d16b-4e55-a167-ad41c8ab4ddd",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"test.applicant2@meridiantechsol.onmicrosoft.com\"\r\n}\r\n"
+								},
+								"url": "{{baseUrl}}/api/applicant/dashboard/stats"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_recent_applications",
+							"id": "7790d67e-8061-4d1f-a98a-a6f2aa241487",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/dashboard/applications/recent"
+							},
+							"response": []
+						}
+					],
+					"id": "3bda1bd0-dfd4-4bb5-a9af-fe3f55f9474f"
+				},
+				{
+					"name": "Managing_Endpoint_notifications",
+					"item": [
+						{
+							"name": "Mark_notifications_as_read",
+							"id": "6bc76a83-5254-4c63-8fbc-faacd470f818",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}} ",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/notifications/31/mark-read"
+							},
+							"response": []
+						},
+						{
+							"name": "Mark_all_notifications_as_read",
+							"id": "3bb69051-abb1-4895-9bc3-2fc63657b6c5",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/notifications/mark-all-read"
+							},
+							"response": []
+						},
+						{
+							"name": "create_notifications",
+							"id": "80cc36d6-7d0d-4b9f-9465-473987f6f30d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"additionalProp1\": \"notification 1\",\r\n  \"additionalProp2\": \"created\",\r\n  \"additionalProp3\": {}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/applicant/notifications/create"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_all_notifications",
+							"id": "eb4005b8-4701-4eea-ad59-96dfc9db603e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/applicant/notifications?page=1&pageSize=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"applicant",
+										"notifications"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "pageSize",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get_unread_notification_count",
+							"id": "1b7efb08-6a73-4a97-ace8-82de7ec0cb34",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/notifications/unread-count"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_recent_notifications",
+							"id": "b3f09d06-79f0-4704-8b77-a43f015d16b0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/notifications/recent"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete_notifications",
+							"id": "52358ced-453b-4369-8585-ba1d90735492",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/notifications/39"
+							},
+							"response": []
+						}
+					],
+					"id": "c55ecf7d-6999-4b8b-823b-09b8ed0ac9f4"
+				},
+				{
+					"name": "Application_Progress",
+					"item": [
+						{
+							"name": "Get_application_progress",
+							"id": "258a3a52-1747-413b-9bb1-70c0862c5d42",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/application-progress/5/details"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_application_progress1",
+							"id": "35261a90-8b88-4915-a100-141ace5cde3e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/application-progress/program/5"
+							},
+							"response": []
+						}
+					],
+					"id": "ebfdc9b5-d079-4de8-8806-d4d522403c0e"
+				},
+				{
+					"name": "Application_Management_Response0",
+					"item": [
+						{
+							"name": "Create Application",
+							"id": "ea0980dd-27c7-40c4-af5b-690859b266da",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/applications/create/88"
+							},
+							"response": []
+						},
+						{
+							"name": "Fetching a form",
+							"id": "c0362d1f-a8ca-4abc-99ef-71a978da3117",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/applications/program/88/form-responses"
+							},
+							"response": []
+						},
+						{
+							"name": "Save Draft Application",
+							"id": "7b5af219-6dba-483d-bac0-944978f6d2fc",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "responses",
+											"value": "\n[{\"fieldId\":569906,\"value\":\"i don't know you\"},{\"fieldId\":5697,\"value\":\"bye shye\"},{\"fieldId\":5698,\"value\":\"hello\"},{\"fieldId\":5699,\"value\":\"\"},{\"fieldId\":5700,\"value\":\"\"},{\"fieldId\":5701,\"value\":\"\"}]",
+											"type": "text",
+											"uuid": "fcaaf739-4245-4d9b-b329-6859d4008309"
+										},
+										{
+											"key": "",
+											"value": "",
+											"type": "text",
+											"uuid": "fdb467db-117a-4faa-b0ff-1caff05637e6",
+											"disabled": true
+										}
+									]
+								},
+								"url": "{{baseUrl}}/api/applicant/applications/139/save-draft"
+							},
+							"response": []
+						},
+						{
+							"name": "Submit Application",
+							"id": "3fb77df1-7cfa-44bb-a548-8b8d55f9f0a9",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "responses",
+											"type": "text",
+											"uuid": "fb2d028f-1429-479c-b232-0134f20d1b67",
+											"value": "\n[{\"fieldId\":5696,\"value\":\"i don't know you\"},{\"fieldId\":5697,\"value\":\"bye shye\"},{\"fieldId\":5698,\"value\":\"hello\"},{\"fieldId\":5699,\"value\":\"\"},{\"fieldId\":5700,\"value\":\"\"},{\"fieldId\":5701,\"value\":\"\"}]"
+										}
+									]
+								},
+								"url": "{{baseUrl}}/api/applicant/applications/139/submit"
+							},
+							"response": []
+						}
+					],
+					"id": "aa7fee64-765b-45b4-bd16-b67bce9850ad"
+				},
+				{
+					"name": "Application _management_Response1",
+					"item": [
+						{
+							"name": "create Application",
+							"id": "967fb316-688c-4d82-a6eb-363c97a718b5",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/applications/create/88"
+							},
+							"response": []
+						},
+						{
+							"name": "fetching a form",
+							"id": "e6c67694-d236-4ffb-97cc-ec6dac5b75c5",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/applications/program/81/form-responses"
+							},
+							"response": []
+						},
+						{
+							"name": "Save Draft Application",
+							"id": "e1f682e4-f512-4336-af4c-b274e029ad05",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "responses",
+											"value": "[\n  {\n    \"fieldId\": 5669,\n    \"value\": \"Jahnavi\"\n  },\n  {\n    \"fieldId\": 5670,\n    \"value\": [\"yes\"]\n  },\n  {\n    \"fieldId\": 5671,\n    \"value\": \"Yes\"\n  },\n  {\n    \"fieldId\": 5672,\n    \"value\": \"jahnavi@test.com\"\n  }\n]\n",
+											"type": "text",
+											"uuid": "b480b346-220e-49b3-8ca5-e5c2d71adf74"
+										}
+									]
+								},
+								"url": "{{baseUrl}}/api/applicant/applications/140/save-draft"
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "d0215a34-9737-45bf-8028-5b8355e7b670",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "responses",
+											"value": "[\n  {\n    \"fieldId\": 5669,\n    \"value\": \"Jahnav\"\n  },\n  {\n    \"fieldId\": 5670,\n    \"value\": \"yes\"\n  },\n  {\n    \"fieldId\": 5671,\n    \"value\": \"Yes\"\n  },\n  {\n    \"fieldId\": 5672,\n    \"value\": \"jahnavi@test.com\"\n  }\n]\n",
+											"type": "text",
+											"uuid": "411ffaa3-a1ce-4425-991a-9a590f5aabd1"
+										}
+									]
+								},
+								"url": "{{baseUrl}}/api/applicant/applications/140/submit"
+							},
+							"response": []
+						}
+					],
+					"id": "fc682dea-304c-404e-99ee-5869c2168872"
+				},
+				{
+					"name": "Browse_Grants",
+					"item": [
+						{
+							"name": "Get_active_Programs",
+							"id": "ce818e93-e49d-45de-a4af-82f924602f73",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/browsegrants"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_all_Departments",
+							"id": "a1fb1728-a42e-4626-842d-32956845c14e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{baseUrl}}/api/browsegrants/departments"
+							},
+							"response": []
+						}
+					],
+					"id": "fc18bc9f-a907-41e8-8f5a-099d06e540de"
+				},
+				{
+					"name": "My Applications",
+					"item": [
+						{
+							"name": "Search_My_applications",
+							"id": "4dc61786-7b67-4823-9114-54ceb97e0899",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/my-applications"
+							},
+							"response": []
+						}
+					],
+					"id": "ff4db003-def6-497b-91b0-fb705b2eedbe"
+				}
+			],
+			"id": "d5595615-6b68-42e6-a5a6-fde263b3102e",
+			"auth": {
+				"type": "bearer",
+				"bearer": {
+					"token": ""
+				}
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b2b3a69c-0e3b-4e42-b6a1-0ce803607a19",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "4a3c975f-ef83-49e7-b7ae-49ce8c0fc9ce",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Reviewer",
+			"item": [
+				{
+					"name": "Reviewer_Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9b2c0efc-8857-4bb1-bde5-a6717df89178",
+								"exec": [
+									"let body = pm.response.text().trim();\r",
+									"let json = body.startsWith(\"{\") ? pm.response.json() : {};\r",
+									"let token = (json.token || \"\").trim();\r",
+									"if (!token && /^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$/.test(body)) token = body;\r",
+									"pm.environment.set(\"reviewer_token\", token);\r",
+									"pm.test(\"Token extracted\", () => pm.expect(token).to.be.a(\"string\").and.not.empty);\r",
+									"\r",
+									"//test\r",
+									"pm.test(\"Authorized as applicant\", function () {\r",
+									"    pm.expect([200, 403]).to.include(pm.response.code);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//get userSecurityId\r",
+									"\r",
+									"let data = pm.response.json();\r",
+									"pm.environment.set(\"userSecurityId\", data.userSecurityId ? data.userSecurityId : \"\");"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "c2e650e1-de7e-4d43-a72f-c4307d49ff65",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"test.reviewer1@meridiantechsol.onmicrosoft.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/auth/user-login"
+					},
+					"response": []
+				},
+				{
+					"name": "Reviewer_dashboard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9b2c0efc-8857-4bb1-bde5-a6717df89178",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "f0d64519-3066-46a6-b349-0542908ac65f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{reviewer_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/reviewer/{{userSecurityId}}/dashboard-stats"
+					},
+					"response": []
+				},
+				{
+					"name": "Reviewer_assigned_programs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9b2c0efc-8857-4bb1-bde5-a6717df89178",
+								"exec": [
+									"//test",
+									"pm.test(\"Reviewer programs\", function () {",
+									"    pm.expect([200]).to.include(pm.response.code);",
+									"});",
+									"",
+									"// Validate response is an array",
+									"pm.test(\"Response is an array\", function () {",
+									"    const data = pm.response.json();",
+									"    pm.expect(data).to.be.an('array');",
+									"});",
+									"",
+									"// Validate array is not empty and first item has ProgramID",
+									"pm.test(\"Array contains at least one program with ProgramID\", function () {",
+									"    const data = pm.response.json();",
+									"    pm.expect(data.length).to.be.greaterThan(0, \"Response array is empty\");",
+									"    pm.expect(data[0]).to.have.property('ProgramID');",
+									"});",
+									"",
+									"// Safely extract and store the first ProgramID",
+									"pm.test(\"Extract and store reviewerProgramID\", function () {",
+									"    const data = pm.response.json();",
+									"    ",
+									"    if (!Array.isArray(data)) {",
+									"        pm.expect.fail(\"Response is not an array\");",
+									"        return;",
+									"    }",
+									"    ",
+									"    if (data.length === 0) {",
+									"        pm.expect.fail(\"Response array is empty - cannot extract ProgramID\");",
+									"        return;",
+									"    }",
+									"    ",
+									"    if (data[0].ProgramID === undefined || data[0].ProgramID === null) {",
+									"        pm.expect.fail(\"First item does not have a valid ProgramID\");",
+									"        return;",
+									"    }",
+									"    ",
+									"    const programId = data[0].ProgramID;",
+									"    pm.environment.set(\"reviewerProgramID\", programId);",
+									"    console.log(\"reviewerProgramID set to:\", programId);",
+									"    ",
+									"    // Verify it was set correctly",
+									"    pm.expect(pm.environment.get(\"reviewerProgramID\")).to.eql(programId);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "d40dd8ff-1d6f-4bf9-bdf4-9a0e21cec906",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{reviewer_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/reviewer/{{userSecurityId}}/assigned-programs"
+					},
+					"response": []
+				},
+				{
+					"name": "Reviewer_Program_search_by_ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9b2c0efc-8857-4bb1-bde5-a6717df89178",
+								"exec": [
+									"//test",
+									"pm.test(\"Reviewer programs\", function () {",
+									"    pm.expect([200]).to.include(pm.response.code);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "06555477-069b-42d3-ac35-2f2518ec798d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{reviewer_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/reviewer/program/{{reviewerProgramID}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Reviewer_Program_reviewers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9b2c0efc-8857-4bb1-bde5-a6717df89178",
+								"exec": [
+									"//test",
+									"pm.test(\"Reviewer programs\", function () {",
+									"    pm.expect([200]).to.include(pm.response.code);",
+									"});",
+									"",
+									"// Validate response is an array",
+									"pm.test(\"Response is an array\", function () {",
+									"    const data = pm.response.json();",
+									"    pm.expect(data).to.be.an('array');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "72a60b46-a072-49d0-893b-12426ac6bbac",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{reviewer_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/reviewer/program/{{reviewerProgramID}}/reviewers"
+					},
+					"response": []
+				},
+				{
+					"name": "Get_Applicants_and_Responses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9b2c0efc-8857-4bb1-bde5-a6717df89178",
+								"exec": [
+									"//test",
+									"pm.test(\"Reviewer programs\", function () {",
+									"    pm.expect([200]).to.include(pm.response.code);",
+									"});",
+									"",
+									"// Validate response is an array",
+									"pm.test(\"Response is an array\", function () {",
+									"    const data = pm.response.json();",
+									"    pm.expect(data).to.be.an('array');",
+									"});",
+									"",
+									"// Validate array is not empty and first item has ProgramID",
+									"pm.test(\"Array contains at least one program with ProgramID\", function () {",
+									"    const data = pm.response.json();",
+									"    pm.expect(data.length).to.be.greaterThan(0, \"Response array is empty\");",
+									"    pm.expect(data[0]).to.have.property('ProgramID');",
+									"});",
+									"",
+									"// Safely extract and store the first ProgramID",
+									"pm.test(\"Extract and store reviewerProgramID\", function () {",
+									"    const data = pm.response.json();",
+									"    ",
+									"    if (!Array.isArray(data)) {",
+									"        pm.expect.fail(\"Response is not an array\");",
+									"        return;",
+									"    }",
+									"    ",
+									"    if (data.length === 0) {",
+									"        pm.expect.fail(\"Response array is empty - cannot extract ProgramID\");",
+									"        return;",
+									"    }",
+									"    ",
+									"    if (data[0].ProgramID === undefined || data[0].ProgramID === null) {",
+									"        pm.expect.fail(\"First item does not have a valid ProgramID\");",
+									"        return;",
+									"    }",
+									"    ",
+									"    const programId = data[0].ProgramID;",
+									"    pm.environment.set(\"reviewerProgramID\", programId);",
+									"    console.log(\"reviewerProgramID set to:\", programId);",
+									"    ",
+									"    // Verify it was set correctly",
+									"    pm.expect(pm.environment.get(\"reviewerProgramID\")).to.eql(programId);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "e24ba518-0a1a-442f-aed6-66f72c708501",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{reviewer_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/reviewer/program/{{reviewerProgramID}}/reviewer/{{userSecurityId}}/aplicants"
+					},
+					"response": []
+				}
+			],
+			"id": "fd37886e-f88a-4db9-b3b8-6b298ae8df26"
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Admin_Dashboard",
+					"item": [
+						{
+							"name": "Admin_Login Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2e2427c9-5206-4325-9f1c-4638251b2040",
+										"exec": [
+											"let body = pm.response.text().trim();\r",
+											"let json = body.startsWith(\"{\") ? pm.response.json() : {};\r",
+											"let token = (json.token || \"\").trim();\r",
+											"if (!token && /^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$/.test(body)) token = body;\r",
+											"pm.environment.set(\"admin_token\", token);\r",
+											"pm.test(\"Token extracted\", () => pm.expect(token).to.be.a(\"string\").and.not.empty);\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "13f25bd2-f312-42e2-8e01-70f993884223",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "d4600593-4e23-49d7-a1a8-ad594aaf008b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"test.admin2@meridiantechsol.onmicrosoft.com\"\r\n}"
+								},
+								"url": "{{baseUrl}}/api/auth/user-login"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Dashboard_statistics",
+							"id": "c82a218f-aa72-4602-b67f-9c1adf3580dd",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/admin/dashboard"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_all_Non_Admin_Users",
+							"id": "bdcfa02e-98e2-417c-ad44-8eb869f1397e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/admin/users"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Applicant_Users",
+							"id": "33a30dbb-a4b5-42ef-97ed-8e65c61e5d21",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/admin/applicant-users"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Reviewer_Users",
+							"id": "7ad2d32a-8487-47bc-b73f-ceee32da5666",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}} ",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/admin/reviewer-users"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Grants_by_Admin_Email",
+							"id": "9d009258-71ac-4efe-a248-677b05cf5204",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/admin/{{adminEmail}}/grants"
+							},
+							"response": []
+						}
+					],
+					"id": "913e7fb3-d66f-4245-95be-0c5d11ac910b"
+				},
+				{
+					"name": "Admin_User_Role_Management",
+					"item": [
+						{
+							"name": "Assign_or_Update_user_role",
+							"id": "1a83d17d-5cb2-4be1-8a5e-6ebbea6ef54e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"roleName\": \"APPLICANT\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/admin/users/test.reviewer@meridiantechsol.onmicrosoft.com/assign-role"
+							},
+							"response": []
+						},
+						{
+							"name": "remove_user-role",
+							"id": "0e818b79-b1dd-4da1-9f51-f27ee685d99f",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/admin/users/test.reviewer2@meridiantechsol.onmicrosoft.com/remove-role"
+							},
+							"response": []
+						}
+					],
+					"id": "543d6a4c-b009-4b54-8803-88cc86d17e36"
+				},
+				{
+					"name": "Admin Assigning Reviewers to a Grant Program",
+					"item": [
+						{
+							"name": "create new phase id",
+							"id": "939f7df1-a621-4a41-afc3-192eca3da335",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/program/{programId}/phases?programId=57&phaseNumber=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"program",
+										"{programId}",
+										"phases"
+									],
+									"query": [
+										{
+											"key": "programId",
+											"value": "57"
+										},
+										{
+											"key": "phaseNumber",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Program_Phases",
+							"id": "7f01ed27-c8d7-4f03-ab58-bea2ced7b305",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/admin/program/192/phases"
+							},
+							"response": []
+						},
+						{
+							"name": "Update reviewer assignment",
+							"id": "ad758d79-7fb1-478d-849d-82a0d3a1dc41",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/update/{programId}/{assignmentId}?assignmentId=56&userSecurityId=8&programId=60",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"update",
+										"{programId}",
+										"{assignmentId}"
+									],
+									"query": [
+										{
+											"key": "assignmentId",
+											"value": "56"
+										},
+										{
+											"key": "userSecurityId",
+											"value": "8"
+										},
+										{
+											"key": "programId",
+											"value": "60"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign reviewers",
+							"id": "0aed2d84-e03b-4a33-af03-f3c3c319a0da",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/assign/57?assignmentType=PARALLEL&userSecurityIds=8&phaseID=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"assign",
+										"57"
+									],
+									"query": [
+										{
+											"key": "assignmentType",
+											"value": "PARALLEL"
+										},
+										{
+											"key": "userSecurityIds",
+											"value": "8"
+										},
+										{
+											"key": "phaseID",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Reviewers_by program",
+							"id": "c9f53039-3525-44bc-9f4a-4c14603f5e05",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/admin/program/59/reviewers"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Submitted_Applications_by_Program",
+							"id": "23f0bbcd-b733-4cb5-8fe5-767067ffab23",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/admin/program/81/applications"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Application_Review_details",
+							"id": "7e1c6ac8-8cc0-4428-a83c-2a9aa4b4ae86",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"programId\": 76,\r\n  \"applicationId\": 124\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/admin/program/76/application/124/reviews",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"admin",
+										"program",
+										"76",
+										"application",
+										"124",
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "programId",
+											"value": "76",
+											"disabled": true
+										},
+										{
+											"key": "applicationId",
+											"value": "124",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get_AI_generated_answers",
+							"id": "dd4869ea-3338-410c-a0c8-9a01725353a3",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/program/74/application/69/ai-answers?programId =74&applicationId =69",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"program",
+										"74",
+										"application",
+										"69",
+										"ai-answers"
+									],
+									"query": [
+										{
+											"key": "programId ",
+											"value": "74"
+										},
+										{
+											"key": "applicationId ",
+											"value": "69"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete_a_Phase",
+							"id": "6e26f82a-ed21-4794-9198-77286cad44bd",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/admin/program/192/phases/1"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Reviewer",
+							"id": "d21a6011-ef93-42f5-849f-abdf5e2c5d35",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/admin/delete/192/511"
+							},
+							"response": []
+						}
+					],
+					"id": "11ff766b-b60d-489f-a78d-92e9a4022efb"
+				}
+			],
+			"id": "77cd0e7d-c373-45ce-b7f3-e23641032bfe"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "fafc7598-568a-4ba1-bfd1-d79bbb0228c3",
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "1fa19839-7ef0-48d5-8b15-f7f2763cf206",
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
