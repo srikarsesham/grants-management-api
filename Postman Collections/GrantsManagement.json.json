@@ -3364,10 +3364,16 @@
 							},
 							"request": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
 								"body": {
-									"mode": "file",
-									"file": {}
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"test.applicant1@meridiantechsol.onmicrosoft.com\"\r\n}\r\n"
 								},
 								"url": "{{baseUrl}}/api/auth/user-login"
 							},
