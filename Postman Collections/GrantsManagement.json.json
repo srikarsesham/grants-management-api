@@ -3332,6 +3332,48 @@
 					"name": "Applicant_Dashboard",
 					"item": [
 						{
+							"name": "applicant login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a4b2e938-bab4-4ab9-9dd7-da40cfdf2771",
+										"exec": [
+											"let body = pm.response.text().trim();\r",
+											"let json = body.startsWith(\"{\") ? pm.response.json() : {};\r",
+											"let token = (json.token || \"\").trim();\r",
+											"if (!token && /^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$/.test(body)) token = body;\r",
+											"pm.environment.set(\"applicant_token\", token);\r",
+											"pm.test(\"Token extracted\", () => pm.expect(token).to.be.a(\"string\").and.not.empty);\r",
+											"\r",
+											"//test\r",
+											"pm.test(\"Authorized as applicant\", function () {\r",
+											"    pm.expect([200, 403]).to.include(pm.response.code);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "4b960a9c-205f-4e63-88a7-8d0878c6ebed",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "file",
+									"file": {}
+								},
+								"url": "{{baseUrl}}/api/auth/user-login"
+							},
+							"response": []
+						},
+						{
 							"name": "applicant_login",
 							"event": [
 								{
@@ -3358,7 +3400,7 @@
 									}
 								}
 							],
-							"id": "9f8fb13d-a2e3-485d-b274-f33cc00ebd30",
+							"id": "423faae8-4d33-4c4e-83bd-677489b3243e",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
