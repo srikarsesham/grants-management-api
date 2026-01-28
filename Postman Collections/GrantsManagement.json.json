@@ -4001,7 +4001,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/browsegrants"
+								"url": "{{baseUrl}}/api/applicant/browsegrants"
 							},
 							"response": []
 						},
