@@ -3380,56 +3380,6 @@
 							"response": []
 						},
 						{
-							"name": "applicant_login",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "9b2c0efc-8857-4bb1-bde5-a6717df89178",
-										"exec": [
-											"let body = pm.response.text().trim();\r",
-											"let json = body.startsWith(\"{\") ? pm.response.json() : {};\r",
-											"let token = (json.token || \"\").trim();\r",
-											"if (!token && /^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$/.test(body)) token = body;\r",
-											"pm.environment.set(\"applicant_token\", token);\r",
-											"pm.test(\"Token extracted\", () => pm.expect(token).to.be.a(\"string\").and.not.empty);\r",
-											"\r",
-											"//test\r",
-											"pm.test(\"Authorized as applicant\", function () {\r",
-											"    pm.expect([200, 403]).to.include(pm.response.code);\r",
-											"});\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {},
-										"requests": {}
-									}
-								}
-							],
-							"id": "423faae8-4d33-4c4e-83bd-677489b3243e",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"email\": \"test.applicant1@meridiantechsol.onmicrosoft.com\"\r\n}\r\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{baseUrl}}/api/auth/user-login"
-							},
-							"response": []
-						},
-						{
 							"name": "Get_applicant_notifications",
 							"event": [
 								{
