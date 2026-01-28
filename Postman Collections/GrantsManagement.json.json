@@ -578,6 +578,96 @@
 							"response": []
 						},
 						{
+							"name": "Create_Department_Page Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e8f40fac-f069-4df2-b080-0ecfc9700dc1",
+										"exec": [
+											"//Status Code Test",
+											"pm.test(\"Status code is 200 or 201\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+											"});",
+											"",
+											"//Validate response is valid JSON",
+											"// pm.test(\"Response is valid JSON\", function () {",
+											"//     pm.response.to.be.json;",
+											"// });",
+											"",
+											"//Validate response message",
+											"pm.test(\"Department created successfully\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"Department created\");",
+											"});",
+											"",
+											"//Validate response time",
+											"pm.test(\"Response time is under 1 second\", function () {",
+											"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "4061e414-2b83-46ca-84a5-8e440f98cc81",
+										"exec": [
+											"// Generate a unique timestamp\r",
+											"const timestamp = Date.now();\r",
+											"\r",
+											"// Generate department data\r",
+											"const departmentName = \"Dept_\" + timestamp;\r",
+											"const departmentDescription = \"Dept Description \" + timestamp;\r",
+											"const departmentStatus = \"Draft\"; // keep fixed or change if needed\r",
+											"\r",
+											"// Save to environment variables\r",
+											"pm.environment.set(\"departmentName\", departmentName);\r",
+											"pm.environment.set(\"departmentDescription\", departmentDescription);\r",
+											"pm.environment.set(\"departmentStatus\", departmentStatus);\r",
+											"\r",
+											"// Log for debugging\r",
+											"console.log(\"Generated department:\");\r",
+											"console.log(\"Name:\", departmentName);\r",
+											"console.log(\"Description:\", departmentDescription);\r",
+											"console.log(\"Status:\", departmentStatus);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "929e57f9-cb7a-4c47-aaad-669496a4dbc5",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"{{departmentName}}\",\r\n  \"description\": \"{{departmentDescription}}\",\r\n  \"status\": \"{{departmentStatus}}\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://grants.southindia.cloudapp.azure.com/api/departments/create"
+							},
+							"response": []
+						},
+						{
 							"name": "Get_all_Departments",
 							"event": [
 								{
