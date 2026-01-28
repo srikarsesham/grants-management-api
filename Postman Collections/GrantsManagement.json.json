@@ -566,7 +566,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"name\": \"{{departmentName}}\",\r\n  \"description\": \"{{departmentDescription}}\",\r\n  \"status\": \"{{departmentStatus}}\"\r\n}\r\n",
+									"raw": "{\r\n  \"name\": \"Dummy123\",\r\n  \"description\": \"departmentDescription\",\r\n  \"status\": \"Active\"\r\n}\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
