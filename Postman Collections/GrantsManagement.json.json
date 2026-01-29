@@ -4639,7 +4639,20 @@
 				},
 				{
 					"name": "Review Application Screen APls",
-					"item": [],
+					"item": [
+						{
+							"name": "update review status",
+							"id": "fc3b0632-e963-46a6-bcbc-431d3e5cb811",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					],
 					"id": "1fc695a4-b96b-4079-ad03-669e76d748ae"
 				},
 				{
