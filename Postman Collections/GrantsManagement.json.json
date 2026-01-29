@@ -4461,7 +4461,7 @@
 					"name": "reviewer-work-flow-controller",
 					"item": [
 						{
-							"name": "New Request",
+							"name": "Initialize_reviewer_application_statuses_for_a_program",
 							"id": "95a74c27-c89b-42a2-b834-d2891867bc51",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
