@@ -3797,7 +3797,13 @@
 							},
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
 								"url": "{{baseUrl}}/api/browsegrants/departments"
 							},
 							"response": []
