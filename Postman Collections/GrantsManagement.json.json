@@ -4509,6 +4509,18 @@
 								"header": []
 							},
 							"response": []
+						},
+						{
+							"name": "Declare conflict of interest for an application",
+							"id": "5a79225b-8553-4811-af07-cc8c3e5d21e2",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "3f7c9162-8478-451a-a813-98bb7d474f11"
