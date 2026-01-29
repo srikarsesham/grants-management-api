@@ -4458,6 +4458,24 @@
 					"id": "8373c4b2-e09e-45af-85d2-9153e4194ec8"
 				},
 				{
+					"name": "reviewer-work-flow-controller",
+					"item": [
+						{
+							"name": "New Request",
+							"id": "95a74c27-c89b-42a2-b834-d2891867bc51",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					],
+					"id": "3f7c9162-8478-451a-a813-98bb7d474f11"
+				},
+				{
 					"name": "Reviewer_Login",
 					"event": [
 						{
