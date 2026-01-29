@@ -4666,8 +4666,24 @@
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "GET",
-								"header": []
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{reviewer_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"rating\": 4,\r\n  \"answers\": {\r\n    \"Q1\": \"Strong proposal with clear objectives\",\r\n    \"Q2\": \"Budget justification is acceptable\",\r\n    \"Q3\": \"Timeline looks realistic\"\r\n  }\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/reviewer/program/{{programId}}/application/{{applicationId}}/reviewer/{{userSecurityId}}/submit"
 							},
 							"response": []
 						}
