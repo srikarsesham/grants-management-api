@@ -4467,6 +4467,44 @@
 								"disableBodyPruning": true
 							},
 							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{reviewer_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/reviewer/workflow/program/{{programId}}/initialize?reviewerUserSecurityId={{userSecurityId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"reviewer",
+										"workflow",
+										"program",
+										"{{programId}}",
+										"initialize"
+									],
+									"query": [
+										{
+											"key": "reviewerUserSecurityId",
+											"value": "{{userSecurityId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Start or reopen review for an application",
+							"id": "c4a9d8d0-5d52-47bb-a89a-b9f6bcb9a916",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
 								"method": "GET",
 								"header": []
 							},
