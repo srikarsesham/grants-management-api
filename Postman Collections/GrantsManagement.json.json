@@ -4660,7 +4660,7 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Submit rating an answers",
 							"id": "0c8172eb-5279-422d-aab1-bd323a22987b",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -4684,6 +4684,37 @@
 									}
 								},
 								"url": "{{baseUrl}}/api/reviewer/program/{{programId}}/application/{{applicationId}}/reviewer/{{userSecurityId}}/submit"
+							},
+							"response": []
+						},
+						{
+							"name": "Get reviewable applications",
+							"id": "2799ca33-8b96-4bb9-9101-7d43e8449de9",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{reviewer_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/reviewer/reviewable-applications/{reviewerId}"
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "3ecc06db-04ce-49b1-a32e-1f1aa579cb96",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
 							},
 							"response": []
 						}
