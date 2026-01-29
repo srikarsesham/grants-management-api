@@ -554,7 +554,7 @@
 										}
 									}
 								},
-								"url": "https://grants.southindia.cloudapp.azure.com/api/departments/create"
+								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/departments/create"
 							},
 							"response": []
 						},
