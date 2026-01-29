@@ -4533,6 +4533,18 @@
 								"header": []
 							},
 							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "ff5e0066-ae16-499d-8bd9-6359f6821d16",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "3f7c9162-8478-451a-a813-98bb7d474f11"
