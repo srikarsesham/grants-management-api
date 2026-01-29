@@ -4702,7 +4702,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/reviewer/reviewable-applications/{reviewerId}"
+								"url": "{{baseUrl}}/api/reviewer/reviewable-applications/{{reviewerId}}"
 							},
 							"response": []
 						},
@@ -4714,7 +4714,14 @@
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{reviewer_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/reviewer/program/{{programId}}/questions"
 							},
 							"response": []
 						},
@@ -4726,7 +4733,14 @@
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{reviewer_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/reviewer/application/{{applicationId}}/user/{{userSecurityId}}/review-status"
 							},
 							"response": []
 						},
@@ -4757,7 +4771,14 @@
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{reviewer_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/reviewer/application/{{applicationId}}/status"
 							},
 							"response": []
 						},
@@ -4769,7 +4790,33 @@
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{reviewer_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/reviewer/application/{{applicationId}}/form-responses"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all documents for an application",
+							"id": "f002d113-43cc-4581-b0f4-13fa0e710d6c",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{reviewer_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/reviewer/application/{{applicationId}}/documents"
 							},
 							"response": []
 						}
