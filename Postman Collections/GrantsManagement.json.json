@@ -4760,6 +4760,18 @@
 								"header": []
 							},
 							"response": []
+						},
+						{
+							"name": "Get application form responses",
+							"id": "e2772c5e-a36d-41c4-b2d1-59a9579371c2",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "1fc695a4-b96b-4079-ad03-669e76d748ae"
