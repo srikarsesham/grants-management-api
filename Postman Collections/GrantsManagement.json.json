@@ -4647,6 +4647,25 @@
 								"disableBodyPruning": true
 							},
 							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{reviewer_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/reviewer/review/{reviewId}/update-status"
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "0c8172eb-5279-422d-aab1-bd323a22987b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
 								"method": "GET",
 								"header": []
 							},
