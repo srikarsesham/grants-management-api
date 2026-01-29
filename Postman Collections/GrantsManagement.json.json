@@ -4505,8 +4505,35 @@
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "GET",
-								"header": []
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{reviewer_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/reviewer/workflow/application/{{ApplicationId}}/start?reviewerUserSecurityId={{userSecurityId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"reviewer",
+										"workflow",
+										"application",
+										"{{ApplicationId}}",
+										"start"
+									],
+									"query": [
+										{
+											"key": "reviewerUserSecurityId",
+											"value": "{{userSecurityId}}",
+											"type": "text"
+										}
+									]
+								}
 							},
 							"response": []
 						},
@@ -4517,8 +4544,35 @@
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "GET",
-								"header": []
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{reviewer_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/reviewer/workflow/application/{{applicationId}}/conflict?reviewerUserSecurityId={{userSecurityId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"reviewer",
+										"workflow",
+										"application",
+										"{{applicationId}}",
+										"conflict"
+									],
+									"query": [
+										{
+											"key": "reviewerUserSecurityId",
+											"value": "{{userSecurityId}}",
+											"type": "text"
+										}
+									]
+								}
 							},
 							"response": []
 						},
@@ -4529,8 +4583,35 @@
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "GET",
-								"header": []
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{reviewer_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}} /api/reviewer/workflow/application/{{applicationId}}/complete?reviewerUserSecurityId={{userSecurityId}}",
+									"host": [
+										"{{baseUrl}} "
+									],
+									"path": [
+										"api",
+										"reviewer",
+										"workflow",
+										"application",
+										"{{applicationId}}",
+										"complete"
+									],
+									"query": [
+										{
+											"key": "reviewerUserSecurityId",
+											"value": "{{userSecurityId}}",
+											"type": "text"
+										}
+									]
+								}
 							},
 							"response": []
 						},
