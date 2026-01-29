@@ -4121,6 +4121,69 @@
 			"name": "Reviewer",
 			"item": [
 				{
+					"name": "Reviewer Dashboard API's",
+					"item": [
+						{
+							"name": "Get_Reviewer_Dashboard_stats",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9b2c0efc-8857-4bb1-bde5-a6717df89178",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "f0d64519-3066-46a6-b349-0542908ac65f",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{reviewer_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/reviewer/{{userSecurityId}}/dashboard-stats"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Assigned_programs_forReviewer",
+							"id": "0480f524-3604-4415-906f-a0e6a59690d8",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					],
+					"id": "47889105-e679-4715-b02a-48c67750fda0"
+				},
+				{
 					"name": "Reviewer_Login",
 					"event": [
 						{
@@ -4172,51 +4235,6 @@
 							}
 						},
 						"url": "{{baseUrl}}/api/auth/user-login"
-					},
-					"response": []
-				},
-				{
-					"name": "Reviewer_dashboard",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "9b2c0efc-8857-4bb1-bde5-a6717df89178",
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"id": "f0d64519-3066-46a6-b349-0542908ac65f",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{reviewer_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{baseUrl}}/api/reviewer/{{userSecurityId}}/dashboard-stats"
 					},
 					"response": []
 				},
