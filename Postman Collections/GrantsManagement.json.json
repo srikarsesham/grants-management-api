@@ -4521,6 +4521,18 @@
 								"header": []
 							},
 							"response": []
+						},
+						{
+							"name": "Mark Review as completed for this reviewer",
+							"id": "0b765465-3e70-4908-ba24-82f5c80fd984",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "3f7c9162-8478-451a-a813-98bb7d474f11"
