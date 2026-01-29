@@ -3804,7 +3804,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/browsegrants/departments"
+								"url": "{{baseUrl}}/api/applicant/browsegrants/departments"
 							},
 							"response": []
 						}
