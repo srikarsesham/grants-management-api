@@ -9,7 +9,7 @@
 			"name": "ConfigManager",
 			"item": [
 				{
-					"name": "User Management",
+					"name": "User Role Management",
 					"item": [
 						{
 							"name": "Login_Config_Manager",
@@ -433,25 +433,6 @@
 									}
 								],
 								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/{{userSecurityId}}/managed-departments"
-							},
-							"response": []
-						},
-						{
-							"name": "New Request",
-							"id": "ef63706b-c7c6-4830-bb38-2337cd7628a9",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{CM_token}}",
-										"type": "text"
-									}
-								],
-								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/{{userSecurityId}}/divisions/{{divisionId}}/programs"
 							},
 							"response": []
 						}
