@@ -4535,19 +4535,31 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "create empty review",
 							"id": "ff5e0066-ae16-499d-8bd9-6359f6821d16",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "GET",
-								"header": []
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{reviewer_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/reviewer/program/{{programId}}/application/{{applicationId}}/reviewer/{{userSecurityId}}/create-empty-review"
 							},
 							"response": []
 						}
 					],
 					"id": "3f7c9162-8478-451a-a813-98bb7d474f11"
+				},
+				{
+					"name": "Review Application Screen APls",
+					"item": [],
+					"id": "1fc695a4-b96b-4079-ad03-669e76d748ae"
 				},
 				{
 					"name": "Reviewer_Login",
