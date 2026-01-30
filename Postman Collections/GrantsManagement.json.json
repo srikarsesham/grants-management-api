@@ -1360,7 +1360,7 @@
 												"type": "text"
 											}
 										],
-										"url": "{{baseUrl}}/api/programs/59/eligibility"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/eligibility"
 									},
 									"response": []
 								},
