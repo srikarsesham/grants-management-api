@@ -656,7 +656,7 @@
 										}
 									}
 								},
-								"url": "https://grants.southindia.cloudapp.azure.com/api/departments"
+								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/departments"
 							},
 							"response": []
 						},
@@ -2363,7 +2363,14 @@
 									},
 									"request": {
 										"method": "GET",
-										"header": []
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{baseUrl}}/api/config-manager/programs/{programId}/contact"
 									},
 									"response": []
 								}
@@ -3560,6 +3567,27 @@
 					"item": [
 						{
 							"name": "Mark_notifications_as_read",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ba645050-d6e5-4ab9-b518-33332c9c6c6f",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Notifications array is present\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.notifications).to.be.an(\"array\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
 							"id": "6bc76a83-5254-4c63-8fbc-faacd470f818",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -3573,7 +3601,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/applicant/notifications/31/mark-read"
+								"url": "{{baseUrl}}/api/applicant/notifications/{{notificationId}}/mark-read"
 							},
 							"response": []
 						},
@@ -3626,6 +3654,41 @@
 						},
 						{
 							"name": "Get_all_notifications",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "33b0f424-1f9b-4eb1-bb28-393a046e5673",
+										"exec": [
+											"const response = pm.response.json();\r",
+											"\r",
+											"// Get notifications array\r",
+											"const notifications = response.notifications;\r",
+											"\r",
+											"// Safety check\r",
+											"if (!notifications || notifications.length === 0) {\r",
+											"    throw new Error(\"No notifications found\");\r",
+											"}\r",
+											"\r",
+											"// Try to find an unread notification\r",
+											"let notification = notifications.find(n => n.IsRead === false);\r",
+											"\r",
+											"// If no unread found, pick the latest one\r",
+											"if (!notification) {\r",
+											"    notification = notifications[0]; // assuming latest is first\r",
+											"}\r",
+											"\r",
+											"// Save NotificationID\r",
+											"pm.environment.set(\"notificationId\", notification.NotificationID);\r",
+											"\r",
+											"console.log(\"Notification ID saved:\", notification.NotificationID);"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
 							"id": "eb4005b8-4701-4eea-ad59-96dfc9db603e",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -3639,27 +3702,7 @@
 										"type": "text"
 									}
 								],
-								"url": {
-									"raw": "{{baseUrl}}/api/applicant/notifications?page=1&pageSize=20",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"applicant",
-										"notifications"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "pageSize",
-											"value": "20"
-										}
-									]
-								}
+								"url": "{{baseUrl}}/api/applicant/notifications"
 							},
 							"response": []
 						},
@@ -3741,7 +3784,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/applicant/application-progress/5/details"
+								"url": "{{baseUrl}}/api/applicant/application-progress/{{programId}}/details"
 							},
 							"response": []
 						},
