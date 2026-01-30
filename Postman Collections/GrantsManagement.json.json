@@ -1922,7 +1922,7 @@
 												}
 											}
 										},
-										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/timeline"
 									},
 									"response": []
 								},
