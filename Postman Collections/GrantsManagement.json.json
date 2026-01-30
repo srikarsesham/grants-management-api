@@ -1334,8 +1334,26 @@
 										"disableBodyPruning": true
 									},
 									"request": {
-										"method": "GET",
-										"header": []
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{CM_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "file",
+													"type": "file",
+													"uuid": "e332bc3d-86b5-4c30-b08e-eb36af13ca1c",
+													"src": "/C:/Users/jahna/OneDrive/Documents/Sample_Test_SP_DSE.pdf"
+												}
+											]
+										},
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/documents"
 									},
 									"response": []
 								}
