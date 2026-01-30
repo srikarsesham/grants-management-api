@@ -435,6 +435,18 @@
 								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/{{userSecurityId}}/managed-departments"
 							},
 							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "fff496db-8eba-4e42-b5d0-7d616954b871",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "7312b4ce-439d-425a-852a-7974bbd1b1b1",
