@@ -692,7 +692,7 @@
 										"type": "text"
 									}
 								],
-								"url": "https://grants.southindia.cloudapp.azure.com/api/departments/{{departmentId}}/summary"
+								"url": "{{baseUrl}}/api/config-manager/departments/{{departmentId}}/summary"
 							},
 							"response": []
 						},
@@ -711,7 +711,7 @@
 										"type": "text"
 									}
 								],
-								"url": "https://grants.southindia.cloudapp.azure.com/api/departments/statuses"
+								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/departments/statuses"
 							},
 							"response": []
 						},
@@ -730,19 +730,35 @@
 										"type": "text"
 									}
 								],
-								"url": "https://grants.southindia.cloudapp.azure.com/api/departments/kpi-dashboard"
+								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/departments/kpi-dashboard"
 							},
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "update Department",
 							"id": "4d2f10d6-8368-4668-bef1-ea00fc437494",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "GET",
-								"header": []
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"string\",\r\n  \"description\": \"string\",\r\n  \"status\": \"Active\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/config-manager/departments/update/{{departmentId}}"
 							},
 							"response": []
 						}
