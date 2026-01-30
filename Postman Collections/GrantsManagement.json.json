@@ -1493,7 +1493,7 @@
 												}
 											}
 										},
-										"url": "{{baseUrl}}/api/programs/{{programId}}/eligibility"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/eligibility"
 									},
 									"response": []
 								}
@@ -1685,8 +1685,12 @@
 											"listen": "prerequest",
 											"script": {
 												"id": "36d16aa4-df85-455c-a8a8-605874b8f16a",
-												"exec": [],
-												"type": "text/javascript"
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
 											}
 										}
 									],
@@ -1712,7 +1716,7 @@
 												}
 											}
 										},
-										"url": "{{baseUrl}}/api/programs/{{programId}}/funding"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/funding"
 									},
 									"response": []
 								},
@@ -1755,8 +1759,12 @@
 											"listen": "prerequest",
 											"script": {
 												"id": "9ac61a7d-e79e-4bc3-8697-87b9dc1b3d16",
-												"exec": [],
-												"type": "text/javascript"
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
 											}
 										}
 									],
@@ -1782,7 +1790,7 @@
 												}
 											}
 										},
-										"url": "{{baseUrl}}/api/programs/{{programId}}/funding/{{fundingId}}"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/funding/{{fundingId}}"
 									},
 									"response": []
 								}
