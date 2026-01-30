@@ -986,7 +986,7 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/divisions/department/{{departmentId}}"
+								"url": "{{baseUrl}}/api/config-manager/divisions/department/{{departmentId}}"
 							},
 							"response": []
 						},
@@ -1015,6 +1015,25 @@
 									}
 								},
 								"url": "{{baseUrl}}/api/divisions/{{departmentId}}/{{divisionId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all divisions",
+							"id": "2f01f818-2737-4e61-ad57-0f26c4ed1ed7",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/config-manager/divisions"
 							},
 							"response": []
 						}
