@@ -1928,6 +1928,34 @@
 								},
 								{
 									"name": "Timeline_with_SubPeriods",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "96b4f0b0-4451-441e-8c6b-5877892bf59a",
+												"exec": [
+													"let res = pm.response.json();\r",
+													"\r",
+													"// assuming first timeline\r",
+													"pm.environment.set(\"timelineId\", res[0].TimelineID);\r",
+													"\r",
+													"// optional: save current values if needed\r",
+													"pm.environment.set(\"currentTitle\", res[0].Title);\r",
+													"pm.environment.set(\"currentStartDate\", res[0].StartDate);\r",
+													"pm.environment.set(\"currentStartTime\", res[0].StartTime);\r",
+													"pm.environment.set(\"currentEndDate\", res[0].EndDate);\r",
+													"pm.environment.set(\"currentEndTime\", res[0].EndTime);\r",
+													"pm.environment.set(\"currentNotes\", res[0].Notes);\r",
+													"\r",
+													"console.log(\"TimelineID saved:\", res[0].TimelineID);\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
 									"id": "bcca5a6d-1d34-4785-b040-a158143c0f0b",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1941,12 +1969,37 @@
 												"type": "text"
 											}
 										],
-										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline/with-sub-periods"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/timeline/with-sub-periods"
 									},
 									"response": []
 								},
 								{
 									"name": "Update_Timeline",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "fee68b1d-4f2d-435b-af3d-849bbac45779",
+												"exec": [
+													"let body = {\r",
+													"  title: \"Custom Date Range\",\r",
+													"  startDate: \"01-30-2026\",   // today or future\r",
+													"  startTime: \"09:00:00\",\r",
+													"  endDate: \"02-05-2026\",\r",
+													"  endTime: \"23:59:00\",\r",
+													"  notes: \"01-30-2026 09:00 - 02-05-2026 23:59\",\r",
+													"  status: \"Active\"\r",
+													"};\r",
+													"\r",
+													"pm.variables.set(\"updateBody\", JSON.stringify(body));\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
 									"id": "cfb1433c-9580-4b94-ace9-6826670a1972",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1962,14 +2015,14 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\"title\":\"Custom Date Range\",\"startDate\":\"12-26-2025\",\"startTime\":\"09:00:00\",\"endDate\":\"12-29-2025\",\"endTime\":\"23:59:00\",\"notes\":\"12-26-2025 09:00 - 12-29-2025 23:59\",\"status\":\"Active\"}",
+											"raw": "{{updateBody}}",
 											"options": {
 												"raw": {
 													"language": "json"
 												}
 											}
 										},
-										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline/{{timelineID}}"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/timeline/{{timelineID}}"
 									},
 									"response": []
 								},
