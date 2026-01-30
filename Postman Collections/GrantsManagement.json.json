@@ -4667,7 +4667,16 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/reviewer/review/{reviewId}/update-status"
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"status\": \"Recommended\",\r\n  \"publishStatus\": \"PUB\",\r\n  \"reviewerNotes\": \"Overall proposal is strong and meets requirements\",\r\n  \"reviewerEmail\": \"test.reviewer1@meridiantechsol.onmicrosoft.com\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/reviewer/review/{{reviewId}}/update-status"
 							},
 							"response": []
 						},
@@ -4688,7 +4697,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"rating\": 4,\r\n  \"answers\": {\r\n    \"295\": \"Strong proposal with clear objectives\",\r\n    \"296\": \"Budget justification is acceptable\",\r\n    \"297\": \"Timeline looks realistic\"\r\n  }\r\n}\r\n",
+									"raw": "{\r\n  \"rating\": 4,\r\n  \"answers\": {\r\n    \"295\": \"Testing 1\",\r\n    \"296\": \"Testing 2\",\r\n    \"297\": \"Testing 3\"\r\n  }\r\n}\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
