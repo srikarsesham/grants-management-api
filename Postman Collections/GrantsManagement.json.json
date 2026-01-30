@@ -1667,7 +1667,7 @@
 									"response": []
 								},
 								{
-									"name": "New Request",
+									"name": "update funding",
 									"event": [
 										{
 											"listen": "test",
