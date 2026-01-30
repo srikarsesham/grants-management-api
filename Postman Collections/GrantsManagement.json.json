@@ -4100,7 +4100,7 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "submit application",
 							"id": "d0215a34-9737-45bf-8028-5b8355e7b670",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
