@@ -152,7 +152,7 @@
 							"response": []
 						},
 						{
-							"name": "Get_Admin_and_no-role_users Copy",
+							"name": "Get_Admin_and_no-role_users",
 							"event": [
 								{
 									"listen": "test",
