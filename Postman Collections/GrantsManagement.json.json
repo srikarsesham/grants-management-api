@@ -1739,7 +1739,7 @@
 									"response": []
 								},
 								{
-									"name": "New Request",
+									"name": "delete",
 									"event": [
 										{
 											"listen": "test",
