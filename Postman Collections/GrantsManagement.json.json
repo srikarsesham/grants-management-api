@@ -5487,5 +5487,11 @@
 				]
 			}
 		}
+	],
+	"variable": [
+		{
+			"key": "encodedEmail",
+			"value": ""
+		}
 	]
 }
