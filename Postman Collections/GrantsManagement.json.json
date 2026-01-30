@@ -12,57 +12,6 @@
 					"name": "User Role Management",
 					"item": [
 						{
-							"name": "Login_Config_Manager",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "52815cc0-c9e5-45e5-9f4a-3d9bd82111cb",
-										"exec": [
-											"let body = pm.response.text().trim();\r",
-											"let json = body.startsWith(\"{\") ? pm.response.json() : {};\r",
-											"let token = (json.token || \"\").trim();\r",
-											"if (!token && /^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$/.test(body)) token = body;\r",
-											"pm.environment.set(\"CM_token\", token);\r",
-											"pm.test(\"Token extracted\", () => pm.expect(token).to.be.a(\"string\").and.not.empty);\r",
-											"\r",
-											"//test"
-										],
-										"type": "text/javascript",
-										"packages": {},
-										"requests": {}
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "f8280617-49f2-4fe9-a2a3-fcc79272550a",
-										"exec": [],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"id": "020031c5-857c-40bf-8563-cba9d110cecf",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"username\": \"hemanth.naidu@meridianit.com\",\r\n  \"password\": \"dummypassword\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "https://grants.southindia.cloudapp.azure.com/api/configuration-manager/login"
-							},
-							"response": []
-						},
-						{
 							"name": "Get_Users_Admins",
 							"event": [
 								{
@@ -435,18 +384,6 @@
 								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/{{userSecurityId}}/managed-departments"
 							},
 							"response": []
-						},
-						{
-							"name": "New Request",
-							"id": "fff496db-8eba-4e42-b5d0-7d616954b871",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": []
-							},
-							"response": []
 						}
 					],
 					"id": "7312b4ce-439d-425a-852a-7974bbd1b1b1",
@@ -796,6 +733,57 @@
 				{
 					"name": "Divisions",
 					"item": [
+						{
+							"name": "Login_Config_Manager",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "52815cc0-c9e5-45e5-9f4a-3d9bd82111cb",
+										"exec": [
+											"let body = pm.response.text().trim();\r",
+											"let json = body.startsWith(\"{\") ? pm.response.json() : {};\r",
+											"let token = (json.token || \"\").trim();\r",
+											"if (!token && /^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$/.test(body)) token = body;\r",
+											"pm.environment.set(\"CM_token\", token);\r",
+											"pm.test(\"Token extracted\", () => pm.expect(token).to.be.a(\"string\").and.not.empty);\r",
+											"\r",
+											"//test"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "f8280617-49f2-4fe9-a2a3-fcc79272550a",
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "020031c5-857c-40bf-8563-cba9d110cecf",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"username\": \"hemanth.naidu@meridianit.com\",\r\n  \"password\": \"dummypassword\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://grants.southindia.cloudapp.azure.com/api/configuration-manager/login"
+							},
+							"response": []
+						},
 						{
 							"name": "Get_Divisions_KPI_by_Department",
 							"id": "94473bdf-9fd6-4b78-afc4-178e1ab4e40e",
