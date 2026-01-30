@@ -733,6 +733,18 @@
 								"url": "https://grants.southindia.cloudapp.azure.com/api/departments/kpi-dashboard"
 							},
 							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "4d2f10d6-8368-4668-bef1-ea00fc437494",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "6554d153-b11d-4c94-8f94-8709834ef2a5",
