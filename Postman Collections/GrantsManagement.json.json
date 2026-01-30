@@ -1195,7 +1195,7 @@
 												"type": "text"
 											},
 											{
-												"key": "file",
+												"key": "",
 												"value": "",
 												"type": "text",
 												"disabled": true
@@ -1226,12 +1226,12 @@
 												{
 													"key": "file",
 													"type": "file",
-													"uuid": "f2ae3d49-a92a-4bf7-82f1-09c5a5b9ac0d",
-													"src": "/C:/Users/srika/Downloads/AppID_10_dminond-nova-edu (1).pdf"
+													"uuid": "9793a980-999d-4e93-b020-61d30f67a1ab",
+													"src": "/C:/Users/jahna/OneDrive/Documents/file-sample_150kB.pdf"
 												}
 											]
 										},
-										"url": "{{baseUrl}}/api/programs/{{programId}}/documents"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/documents"
 									},
 									"response": []
 								},
