@@ -2728,7 +2728,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/programs/{{id}}"
+								"url": "{{baseUrl}}/api/config-manager/programs"
 							},
 							"response": []
 						},
@@ -3803,7 +3803,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/applicant/application-progress/program/5"
+								"url": "{{baseUrl}}/api/applicant/application-progress/program/{{programId}}"
 							},
 							"response": []
 						}
@@ -3897,7 +3897,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/applicant/applications/create/88"
+								"url": "{{baseUrl}}/api/applicant/applications/create/{{programId}}"
 							},
 							"response": []
 						},
@@ -3916,7 +3916,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/applicant/applications/program/88/form-responses"
+								"url": "{{baseUrl}}/api/applicant/applications/program/{{programId}}/form-responses"
 							},
 							"response": []
 						},
@@ -3953,7 +3953,7 @@
 										}
 									]
 								},
-								"url": "{{baseUrl}}/api/applicant/applications/139/save-draft"
+								"url": "{{baseUrl}}/api/applicant/applications/{{applicationId}}/save-draft"
 							},
 							"response": []
 						},
@@ -3983,7 +3983,7 @@
 										}
 									]
 								},
-								"url": "{{baseUrl}}/api/applicant/applications/139/submit"
+								"url": "{{baseUrl}}/api/applicant/applications/{{applicationId}}/submit"
 							},
 							"response": []
 						},
@@ -3994,8 +3994,15 @@
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "GET",
-								"header": []
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{applicant_token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUrl}}/api/applicant/applications/{applicationId}/table-upload"
 							},
 							"response": []
 						},
