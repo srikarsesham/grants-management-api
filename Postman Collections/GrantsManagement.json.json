@@ -1465,7 +1465,7 @@
 												}
 											}
 										},
-										"url": "{{baseUrl}}/api/programs/{{programId}}/eligibility"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/eligibility"
 									},
 									"response": []
 								},
@@ -1504,7 +1504,7 @@
 							"name": "Program Funding",
 							"item": [
 								{
-									"name": "New Request",
+									"name": "List_funding_allocations",
 									"event": [
 										{
 											"listen": "test",
@@ -1555,7 +1555,7 @@
 												"type": "text"
 											}
 										],
-										"url": "{{baseUrl}}/api/programs/{{programId}}/funding"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/funding"
 									},
 									"response": []
 								},
@@ -1662,7 +1662,7 @@
 												}
 											}
 										},
-										"url": "{{baseUrl}}/api/programs/{{programId}}/funding"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/funding"
 									},
 									"response": []
 								},
