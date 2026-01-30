@@ -804,12 +804,12 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/divisions/kpis/{{departmentId}}"
+								"url": "{{baseUrl}}/api/config-manager/divisions/kpis/{{departmentId}}"
 							},
 							"response": []
 						},
 						{
-							"name": "Create_Division",
+							"name": "Create_update_Division",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -896,7 +896,7 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/divisions/save/{{departmentId}}"
+								"url": "{{baseUrl}}/api/config-manager/divisions/save/{{departmentId}}"
 							},
 							"response": []
 						},
