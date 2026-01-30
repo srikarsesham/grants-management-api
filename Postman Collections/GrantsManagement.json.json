@@ -63,135 +63,6 @@
 							"response": []
 						},
 						{
-							"name": "Get_Admin_and_no-role_users",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "1b7c37a5-0016-4f65-b4e2-aa62045c62c0",
-										"exec": [
-											"let data = pm.response.json();\r",
-											"\r",
-											"// Find user where role does NOT contain \"ADMIN\"\r",
-											"let user = data.find(u => !u.CurrentRole.toLowerCase().includes(\"admin\"));\r",
-											"\r",
-											"// Always override – even with empty string when not found\r",
-											"pm.environment.set(\"user_email_non_admin\", user ? user.Email : \"\");\r",
-											"pm.environment.set(\"user_role\", user ? user.CurrentRole : \"\");\r",
-											"\r",
-											"// Test (optional)\r",
-											"pm.test(\"User without ADMIN role found (or set empty)\", () => {\r",
-											"    pm.expect(true).to.be.true;\r",
-											"});\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {},
-										"requests": {}
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "dafbe6de-8f9e-4cf3-8cc3-1191a40b645f",
-										"exec": [
-											""
-										],
-										"type": "text/javascript",
-										"packages": {},
-										"requests": {}
-									}
-								}
-							],
-							"id": "0647199d-962b-4ef8-b65f-c643201ba4d0",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{CM_token}}",
-										"type": "text"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/admin-or-norole"
-							},
-							"response": []
-						},
-						{
-							"name": "Get_Admin_and_no-role_users Copy",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "07028259-9aa8-441e-b4f6-3dcd81107019",
-										"exec": [
-											""
-										],
-										"type": "text/javascript",
-										"packages": {},
-										"requests": {}
-									}
-								}
-							],
-							"id": "c2dd4572-e4b9-49fe-a284-f0a5cb0db87b",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{CM_token}}",
-										"type": "text"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"email\": \"{{user_email_non_admin}}\",\r\n  \"roleName\": \"ADMIN\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/{{user_email_non_admin}}/assign-role"
-							},
-							"response": []
-						},
-						{
 							"name": "Get_Users_Admins",
 							"event": [
 								{
@@ -276,7 +147,136 @@
 										}
 									}
 								},
-								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/admins"
+								"url": "{{baseUrl}}/api/config-manager/users/admins"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Admin_and_no-role_users Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "07028259-9aa8-441e-b4f6-3dcd81107019",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "c2dd4572-e4b9-49fe-a284-f0a5cb0db87b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"{{user_email_non_admin}}\",\r\n  \"roleName\": \"ADMIN\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/{{user_email_non_admin}}/assign-role"
+							},
+							"response": []
+						},
+						{
+							"name": "Get_Admin_and_no-role_users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "1b7c37a5-0016-4f65-b4e2-aa62045c62c0",
+										"exec": [
+											"let data = pm.response.json();\r",
+											"\r",
+											"// Find user where role does NOT contain \"ADMIN\"\r",
+											"let user = data.find(u => !u.CurrentRole.toLowerCase().includes(\"admin\"));\r",
+											"\r",
+											"// Always override – even with empty string when not found\r",
+											"pm.environment.set(\"user_email_non_admin\", user ? user.Email : \"\");\r",
+											"pm.environment.set(\"user_role\", user ? user.CurrentRole : \"\");\r",
+											"\r",
+											"// Test (optional)\r",
+											"pm.test(\"User without ADMIN role found (or set empty)\", () => {\r",
+											"    pm.expect(true).to.be.true;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "dafbe6de-8f9e-4cf3-8cc3-1191a40b645f",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"id": "0647199d-962b-4ef8-b65f-c643201ba4d0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{CM_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://grants.southindia.cloudapp.azure.com/api/config-manager/users/admin-or-norole"
 							},
 							"response": []
 						},
