@@ -1014,7 +1014,7 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/divisions/{{departmentId}}/{{divisionId}}"
+								"url": "{{baseUrl}}/api/config-manager/divisions/{{departmentId}}/{{divisionId}}"
 							},
 							"response": []
 						},
