@@ -5391,7 +5391,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{baseUrl}}/api/admin/program/{programId}/phases?programId=57&phaseNumber=1",
+									"raw": "{{baseUrl}}/api/admin/program/{{programId}}/phases?phaseNumber=1",
 									"host": [
 										"{{baseUrl}}"
 									],
@@ -5399,17 +5399,14 @@
 										"api",
 										"admin",
 										"program",
-										"{programId}",
+										"{{programId}}",
 										"phases"
 									],
 									"query": [
 										{
-											"key": "programId",
-											"value": "57"
-										},
-										{
 											"key": "phaseNumber",
-											"value": "1"
+											"value": "1",
+											"type": "text"
 										}
 									]
 								}
