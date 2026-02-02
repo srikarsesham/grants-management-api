@@ -4473,15 +4473,23 @@
 											"        .Applications[0]",
 											"        .ApplicationID;",
 											"",
+											"const reviewerId = response.ReviewerID;",
+											"",
 											"// Set it as an environment variable",
 											"pm.environment.set(\"ApplicationId\", applicationId);",
+											"pm.environment.set(\"ReviewerId\", reviewerId);",
 											"",
 											"// Optional log (for debugging)",
 											"console.log(\"Captured ApplicationId:\", applicationId);",
+											"console.log(\"Captured ReviewerId:\", reviewerId);",
 											"",
 											"// Assertion",
 											"pm.test(\"ApplicationId is captured\", function () {",
 											"    pm.expect(applicationId).to.not.be.undefined;",
+											"});",
+											"",
+											"pm.test(\"ReviewerId is captured\", function () {",
+											"    pm.expect(reviewerId).to.not.be.undefined;",
 											"});",
 											""
 										],
@@ -4878,7 +4886,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/reviewer/reviewable-applications/{{reviewerId}}"
+								"url": "{{baseUrl}}/api/reviewer/reviewable-applications/{{ReviewerId}}"
 							},
 							"response": []
 						},
@@ -4916,7 +4924,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/reviewer/application/{{applicationId}}/user/{{userSecurityId}}/review-status"
+								"url": "{{baseUrl}}/api/reviewer/application/{{ApplicationId}}/user/{{userSecurityId}}/review-status"
 							},
 							"response": []
 						},
@@ -4935,7 +4943,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/reviewer/application/{{applicationId}}/status"
+								"url": "{{baseUrl}}/api/reviewer/application/{{ApplicationId}}/status"
 							},
 							"response": []
 						},
@@ -4954,7 +4962,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/reviewer/application/{{applicationId}}/status"
+								"url": "{{baseUrl}}/api/reviewer/application/{{ApplicationId}}/status"
 							},
 							"response": []
 						},
@@ -4973,7 +4981,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/reviewer/application/{{applicationId}}/form-responses"
+								"url": "{{baseUrl}}/api/reviewer/application/{{ApplicationId}}/form-responses"
 							},
 							"response": []
 						},
