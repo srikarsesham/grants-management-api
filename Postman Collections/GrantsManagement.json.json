@@ -5389,9 +5389,15 @@
 							},
 							"request": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
 								"url": {
-									"raw": "{{baseUrl}}/api/admin/program/{{programId}}/phases?phaseNumber=1",
+									"raw": "{{baseUrl}}/api/admin/program/{{programId}}/phases?phaseNumber=2",
 									"host": [
 										"{{baseUrl}}"
 									],
@@ -5405,8 +5411,7 @@
 									"query": [
 										{
 											"key": "phaseNumber",
-											"value": "1",
-											"type": "text"
+											"value": "2"
 										}
 									]
 								}
@@ -5415,6 +5420,47 @@
 						},
 						{
 							"name": "Get_Program_Phases",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "0be5ab77-68aa-49ad-8d7c-ade26de3986b",
+										"exec": [
+											"// Parse response\r",
+											"const phases = pm.response.json();\r",
+											"\r",
+											"// Validate response\r",
+											"pm.test(\"Phases list is not empty\", function () {\r",
+											"    pm.expect(phases.length).to.be.greaterThan(0);\r",
+											"});\r",
+											"\r",
+											"// Pick PhaseNumber = 1 (or first phase)\r",
+											"const phase = phases.find(p => p.PhaseNumber === 1) || phases[0];\r",
+											"\r",
+											"// Extract values\r",
+											"const phaseNumber = phase.PhaseNumber;\r",
+											"const phaseId = phase.PhaseID;\r",
+											"\r",
+											"// Save as collection variables\r",
+											"pm.collectionVariables.set(\"phaseNumber\", phaseNumber);\r",
+											"pm.collectionVariables.set(\"phaseId\", phaseId);\r",
+											"\r",
+											"// Logs\r",
+											"console.log(\"Captured phaseNumber:\", phaseNumber);\r",
+											"console.log(\"Captured phaseId:\", phaseId);\r",
+											"\r",
+											"// Assertions\r",
+											"pm.test(\"PhaseNumber is captured\", function () {\r",
+											"    pm.expect(phaseNumber).to.not.be.undefined;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
 							"id": "7f01ed27-c8d7-4f03-ab58-bea2ced7b305",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
