@@ -1007,14 +1007,14 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"name\": \"{{divisionName}}\",\r\n  \"description\": \"{{divisionDescription}}\",\r\n  \"status\": \"{{divisionStatus}}\"\r\n}\r\n",
+									"raw": "{\r\n  \"name\": \"string\",\r\n  \"description\": \"string\",\r\n  \"status\": \"Active\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/config-manager/divisions/{{departmentId}}/{{divisionId}}"
+								"url": "Token extracted/api/config-manager/divisions/{{departmentId}}/{{divisionId}}"
 							},
 							"response": []
 						},
@@ -1048,6 +1048,26 @@
 							"item": [
 								{
 									"name": "Get_documnets_by_programID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "6992aa2f-2a18-400b-ba31-d9525dff5824",
+												"exec": [
+													"let response = pm.response.json();\r",
+													"\r",
+													"// assuming at least one document exists\r",
+													"pm.environment.set(\"documentId\", response[0].DocumentID);\r",
+													"\r",
+													"console.log(\"Saved documentId:\", response[0].DocumentID);\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
 									"id": "16e00d76-78b2-41fe-a6bb-e708fd9a6879",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1070,7 +1090,7 @@
 												}
 											}
 										},
-										"url": "{{baseUrl}}/api/programs/{{programId}}"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/documents"
 									},
 									"response": []
 								},
@@ -1292,34 +1312,10 @@
 											"mode": "formdata",
 											"formdata": [
 												{
-													"key": "programId",
-													"value": "59",
-													"type": "text",
-													"uuid": "8734c30a-6e5a-4648-bcfa-4d381485b88f"
-												},
-												{
-													"key": "title",
-													"value": "updating the document",
-													"type": "text",
-													"uuid": "553a7232-35fb-41df-9508-28c656c237e6"
-												},
-												{
-													"key": "description",
-													"value": "updating the document",
-													"type": "text",
-													"uuid": "fc96b00f-e358-4ab3-9158-9cb5c155c96a"
-												},
-												{
 													"key": "file",
 													"type": "file",
-													"uuid": "c4a4efde-cfcd-403c-beaf-b14058db1dbe",
-													"src": "/C:/Users/srika/Downloads/AppID_8_azarrinpar-ufl-edu (1).pdf"
-												},
-												{
-													"key": "documentId",
-													"value": "19",
-													"type": "text",
-													"uuid": "6502d69d-d7ca-4e5e-b6a0-9087c50636db"
+													"uuid": "d0cc6e94-c68a-4aad-aa5e-df9d87d9a370",
+													"src": "/C:/Users/jahna/OneDrive/Documents/file-sample_150kB.pdf"
 												}
 											]
 										},
@@ -1833,7 +1829,7 @@
 												"type": "text"
 											}
 										],
-										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/timeline"
 									},
 									"response": []
 								},
