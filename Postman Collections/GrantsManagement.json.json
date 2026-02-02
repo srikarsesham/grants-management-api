@@ -5231,39 +5231,6 @@
 									"script": {
 										"id": "74dc8bf2-2c9c-4379-869a-d894c45cb9be",
 										"exec": [
-											"// Parse response\r",
-											"const users = pm.response.json();\r",
-											"\r",
-											"// Validate response\r",
-											"pm.test(\"Applicant users list is not empty\", function () {\r",
-											"    pm.expect(users.length).to.be.greaterThan(0);\r",
-											"});\r",
-											"\r",
-											"// Pick first ACTIVE applicant\r",
-											"const applicant = users.find(u => u.status === \"Active\");\r",
-											"\r",
-											"if (!applicant) {\r",
-											"    throw new Error(\"No ACTIVE applicant found\");\r",
-											"}\r",
-											"\r",
-											"// Extract email\r",
-											"const email = applicant.email;\r",
-											"\r",
-											"// Encode email for URL path usage (important!)\r",
-											"const encodedEmail = encodeURIComponent(email);\r",
-											"\r",
-											"// Save variables (collection scope recommended)\r",
-											"pm.collectionVariables.set(\"applicantEmail\", email);\r",
-											"pm.collectionVariables.set(\"encodedApplicantEmail\", encodedEmail);\r",
-											"\r",
-											"// Logs\r",
-											"console.log(\"Applicant email:\", email);\r",
-											"console.log(\"Encoded applicant email:\", encodedEmail);\r",
-											"\r",
-											"// Assertions\r",
-											"pm.test(\"Applicant email captured\", function () {\r",
-											"    pm.expect(email).to.not.be.undefined;\r",
-											"});\r",
 											""
 										],
 										"type": "text/javascript",
@@ -5323,7 +5290,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/admin//grants"
+								"url": "{{baseUrl}}/api/admin/{{encodedEmail}}/grants"
 							},
 							"response": []
 						}
@@ -5745,6 +5712,14 @@
 	"variable": [
 		{
 			"key": "encodedEmail",
+			"value": ""
+		},
+		{
+			"key": "applicantEmail",
+			"value": ""
+		},
+		{
+			"key": "encodedApplicantEmail",
 			"value": ""
 		}
 	]
