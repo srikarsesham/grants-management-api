@@ -2071,7 +2071,7 @@
 									"response": []
 								},
 								{
-									"name": "New Request",
+									"name": "Create Evaluation",
 									"event": [
 										{
 											"listen": "test",
