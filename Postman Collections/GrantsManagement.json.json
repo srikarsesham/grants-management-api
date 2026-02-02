@@ -5553,13 +5553,11 @@
 									"query": [
 										{
 											"key": "userSecurityIds",
-											"value": "{{userSecurityId}}",
-											"type": "text"
+											"value": "{{userSecurityId}}"
 										},
 										{
 											"key": "assignmentType",
-											"value": "SINGLE",
-											"type": "text"
+											"value": "SINGLE"
 										}
 									]
 								}
