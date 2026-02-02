@@ -4463,6 +4463,26 @@
 											"    pm.expect([200]).to.include(pm.response.code);",
 											"});",
 											"",
+											"// Parse response JSON",
+											"const response = pm.response.json();",
+											"",
+											"// Safely navigate the nested structure",
+											"const applicationId =",
+											"    response.ProgramDates.Timelines[0]",
+											"        .TimelineForms[0]",
+											"        .Applications[0]",
+											"        .ApplicationID;",
+											"",
+											"// Set it as an environment variable",
+											"pm.environment.set(\"ApplicationId\", applicationId);",
+											"",
+											"// Optional log (for debugging)",
+											"console.log(\"Captured ApplicationId:\", applicationId);",
+											"",
+											"// Assertion",
+											"pm.test(\"ApplicationId is captured\", function () {",
+											"    pm.expect(applicationId).to.not.be.undefined;",
+											"});",
 											""
 										],
 										"type": "text/javascript",
@@ -4679,8 +4699,7 @@
 									"query": [
 										{
 											"key": "reviewerUserSecurityId",
-											"value": "{{userSecurityId}}",
-											"type": "text"
+											"value": "{{userSecurityId}}"
 										}
 									]
 								}
@@ -4703,7 +4722,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/api/reviewer/workflow/application/{{applicationId}}/conflict?reviewerUserSecurityId={{userSecurityId}}",
+									"raw": "{{baseUrl}}/api/reviewer/workflow/application/{{ApplicationId}}/conflict?reviewerUserSecurityId={{userSecurityId}}",
 									"host": [
 										"{{baseUrl}}"
 									],
@@ -4712,14 +4731,13 @@
 										"reviewer",
 										"workflow",
 										"application",
-										"{{applicationId}}",
+										"{{ApplicationId}}",
 										"conflict"
 									],
 									"query": [
 										{
 											"key": "reviewerUserSecurityId",
-											"value": "{{userSecurityId}}",
-											"type": "text"
+											"value": "{{userSecurityId}}"
 										}
 									]
 								}
@@ -4757,8 +4775,7 @@
 									"query": [
 										{
 											"key": "reviewerUserSecurityId",
-											"value": "{{userSecurityId}}",
-											"type": "text"
+											"value": "{{userSecurityId}}"
 										}
 									]
 								}
