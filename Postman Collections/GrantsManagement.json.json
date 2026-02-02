@@ -2137,7 +2137,7 @@
 									"response": []
 								},
 								{
-									"name": "New Request",
+									"name": "update evaluation",
 									"id": "516645c8-0ab2-454d-a440-34c54bcc80d9",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -2165,7 +2165,7 @@
 									"response": []
 								},
 								{
-									"name": "New Request",
+									"name": "delete evaluation",
 									"id": "9b6c5edd-89a0-4cd1-8668-7aca40949fb3",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
