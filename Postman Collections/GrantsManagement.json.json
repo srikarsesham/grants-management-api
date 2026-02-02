@@ -2204,7 +2204,7 @@
 												"type": "text"
 											}
 										],
-										"url": "{{baseUrl}}/api/programs/{{programId}}/dates"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/dates"
 									},
 									"response": []
 								},
@@ -2280,7 +2280,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\"startDate\":\"12-26-2025\",\"startTime\":\"09:00:00\",\"endDate\":\"12-31-2025\",\"endTime\":\"23:59:00\",\"notes\":null,\"status\":\"Draft\"}",
+											"raw": "{\"startDate\":\"02-02-2026\",\"startTime\":\"09:00:00\",\"endDate\":\"02-03-2026\",\"endTime\":\"23:59:00\",\"notes\":null,\"status\":\"Draft\"}",
 											"options": {
 												"raw": {
 													"language": "json"
