@@ -5460,7 +5460,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/admin/update/{{programId}}/{{assignmentId}}?usersecurityid={{userSecurityId}}",
+									"raw": "{{baseUrl}}/api/admin/update/{{programId}}/{{assignmentId}}?userSecurityId={{userSecurityId}}",
 									"host": [
 										"{{baseUrl}}"
 									],
@@ -5473,7 +5473,7 @@
 									],
 									"query": [
 										{
-											"key": "usersecurityid",
+											"key": "userSecurityId",
 											"value": "{{userSecurityId}}"
 										}
 									]
