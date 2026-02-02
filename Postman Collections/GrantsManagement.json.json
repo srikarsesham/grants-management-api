@@ -5451,7 +5451,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/api/admin/update/{programId}/{assignmentId}?assignmentId=56&userSecurityId=8&programId=60",
+									"raw": "{{baseUrl}}/api/admin/update/{{programId}}/{{assignmentId}}?usersecurityid={{userSecurityId}}",
 									"host": [
 										"{{baseUrl}}"
 									],
@@ -5459,21 +5459,14 @@
 										"api",
 										"admin",
 										"update",
-										"{programId}",
-										"{assignmentId}"
+										"{{programId}}",
+										"{{assignmentId}}"
 									],
 									"query": [
 										{
-											"key": "assignmentId",
-											"value": "56"
-										},
-										{
-											"key": "userSecurityId",
-											"value": "8"
-										},
-										{
-											"key": "programId",
-											"value": "60"
+											"key": "usersecurityid",
+											"value": "{{userSecurityId}}",
+											"type": "text"
 										}
 									]
 								}
@@ -5524,6 +5517,41 @@
 						},
 						{
 							"name": "Get_Reviewers_by program",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2fce7194-c5af-406c-9ca1-179ebd44125d",
+										"exec": [
+											"// Parse response\r",
+											"const reviewers = pm.response.json();\r",
+											"\r",
+											"// Validate response\r",
+											"pm.test(\"Reviewers list is not empty\", function () {\r",
+											"    pm.expect(reviewers.length).to.be.greaterThan(0);\r",
+											"});\r",
+											"\r",
+											"// Pick first assignment (or add conditions if needed)\r",
+											"const assignmentId = reviewers[0].AssignmentID;\r",
+											"\r",
+											"// Save as collection variable\r",
+											"pm.collectionVariables.set(\"assignmentId\", assignmentId);\r",
+											"\r",
+											"// Logs\r",
+											"console.log(\"Captured AssignmentID:\", assignmentId);\r",
+											"\r",
+											"// Assertion\r",
+											"pm.test(\"AssignmentID is captured\", function () {\r",
+											"    pm.expect(assignmentId).to.not.be.undefined;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
 							"id": "c9f53039-3525-44bc-9f4a-4c14603f5e05",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -5731,6 +5759,10 @@
 		},
 		{
 			"key": "loginEmail",
+			"value": ""
+		},
+		{
+			"key": "assignmentId",
 			"value": ""
 		}
 	]
