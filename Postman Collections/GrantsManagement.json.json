@@ -5537,7 +5537,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/admin/program/59/reviewers"
+								"url": "{{baseUrl}}/api/admin/program/{{programId}}/reviewers"
 							},
 							"response": []
 						},
@@ -5556,7 +5556,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/admin/program/81/applications"
+								"url": "{{baseUrl}}/api/admin/program/{{programId}}/applications"
 							},
 							"response": []
 						},
@@ -5585,19 +5585,17 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/api/admin/program/76/application/124/reviews",
-									"protocol": "http",
+									"raw": "{{baseUrl}}/api/admin/program/{{programId}}/application/{{ApplicationId}}/reviews",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "8080",
 									"path": [
 										"api",
 										"admin",
 										"program",
-										"76",
+										"{{programId}}",
 										"application",
-										"124",
+										"{{ApplicationId}}",
 										"reviews"
 									],
 									"query": [
@@ -5631,31 +5629,7 @@
 										"type": "text"
 									}
 								],
-								"url": {
-									"raw": "{{baseUrl}}/api/admin/program/74/application/69/ai-answers?programId =74&applicationId =69",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"program",
-										"74",
-										"application",
-										"69",
-										"ai-answers"
-									],
-									"query": [
-										{
-											"key": "programId ",
-											"value": "74"
-										},
-										{
-											"key": "applicationId ",
-											"value": "69"
-										}
-									]
-								}
+								"url": "{{baseUrl}}/api/admin/program/{{programId}}/application/{{ApplicationId}}/ai-answers"
 							},
 							"response": []
 						},
