@@ -4768,7 +4768,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}} /api/reviewer/workflow/application/{{applicationId}}/complete?reviewerUserSecurityId={{userSecurityId}}",
+									"raw": "{{baseUrl}} /api/reviewer/workflow/application/{{ApplicationId}}/complete?reviewerUserSecurityId={{userSecurityId}}",
 									"host": [
 										"{{baseUrl}} "
 									],
@@ -4777,7 +4777,7 @@
 										"reviewer",
 										"workflow",
 										"application",
-										"{{applicationId}}",
+										"{{ApplicationId}}",
 										"complete"
 									],
 									"query": [
@@ -4792,6 +4792,36 @@
 						},
 						{
 							"name": "create empty review",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9a4e34d1-a6bc-451d-ae34-15d23ff4c462",
+										"exec": [
+											"// Parse response\r",
+											"const response = pm.response.json();\r",
+											"\r",
+											"// Extract reviewId\r",
+											"const reviewId = response.reviewId;\r",
+											"\r",
+											"// Store as environment variable\r",
+											"pm.environment.set(\"reviewId\", reviewId);\r",
+											"\r",
+											"// Assertion\r",
+											"pm.test(\"reviewId is captured\", function () {\r",
+											"    pm.expect(reviewId).to.not.be.undefined;\r",
+											"});\r",
+											"\r",
+											"// Optional log\r",
+											"console.log(\"Captured reviewId:\", reviewId);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
 							"id": "ff5e0066-ae16-499d-8bd9-6359f6821d16",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -4805,7 +4835,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/reviewer/program/{{programId}}/application/{{applicationId}}/reviewer/{{userSecurityId}}/create-empty-review"
+								"url": "{{baseUrl}}/api/reviewer/program/{{programId}}/application/{{ApplicationId}}/reviewer/{{userSecurityId}}/create-empty-review"
 							},
 							"response": []
 						}
@@ -4867,7 +4897,7 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/reviewer/program/{{programId}}/application/{{applicationId}}/reviewer/{{userSecurityId}}/submit"
+								"url": "{{baseUrl}}/api/reviewer/program/{{programId}}/application/{{ApplicationId}}/reviewer/{{userSecurityId}}/submit"
 							},
 							"response": []
 						},
@@ -5000,7 +5030,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/reviewer/application/{{applicationId}}/documents"
+								"url": "{{baseUrl}}/api/reviewer/application/{{ApplicationId}}/documents"
 							},
 							"response": []
 						}
