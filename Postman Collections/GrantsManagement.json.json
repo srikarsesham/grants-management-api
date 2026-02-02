@@ -5192,6 +5192,53 @@
 						},
 						{
 							"name": "Get_all_Non_Admin_Users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b516ddfc-e480-46fb-ab81-eeb21ea0a647",
+										"exec": [
+											"// Parse response\r",
+											"const users = pm.response.json();\r",
+											"\r",
+											"// Validate response\r",
+											"pm.test(\"Users list is not empty\", function () {\r",
+											"    pm.expect(users.length).to.be.greaterThan(0);\r",
+											"});\r",
+											"\r",
+											"// Pick first ACTIVE applicant (safer than index-based)\r",
+											"const user = users.find(u => \r",
+											"    u.currentRole === \"APPLICANT\" && u.status === \"Active\"\r",
+											");\r",
+											"\r",
+											"// Extract values\r",
+											"const userEmail = user.email;\r",
+											"const userSecurityId = user.userSecurityID;\r",
+											"\r",
+											"// Store as environment variables\r",
+											"pm.environment.set(\"userEmail\", userEmail);\r",
+											"pm.environment.set(\"userSecurityId\", userSecurityId);\r",
+											"\r",
+											"// Logs\r",
+											"console.log(\"Captured userEmail:\", userEmail);\r",
+											"console.log(\"Captured userSecurityId:\", userSecurityId);\r",
+											"\r",
+											"// Assertions\r",
+											"pm.test(\"User email captured\", function () {\r",
+											"    pm.expect(userEmail).to.not.be.undefined;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"User security ID captured\", function () {\r",
+											"    pm.expect(userSecurityId).to.not.be.undefined;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
 							"id": "bdcfa02e-98e2-417c-ad44-8eb869f1397e",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -5262,7 +5309,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/admin/{{adminEmail}}/grants"
+								"url": "{{baseUrl}}/api/admin/{{userEmail}}/grants"
 							},
 							"response": []
 						}
