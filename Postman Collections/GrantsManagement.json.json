@@ -5450,6 +5450,15 @@
 										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"assignmentType\": \"SINGLE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
 									"raw": "{{baseUrl}}/api/admin/update/{{programId}}/{{assignmentId}}?usersecurityid={{userSecurityId}}",
 									"host": [
@@ -5465,8 +5474,7 @@
 									"query": [
 										{
 											"key": "usersecurityid",
-											"value": "{{userSecurityId}}",
-											"type": "text"
+											"value": "{{userSecurityId}}"
 										}
 									]
 								}
