@@ -5495,7 +5495,30 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/admin/assign/{{programId}}"
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/assign/{{programId}}?userSecurityIds={{userSecurityId}}&assignmentType=SINGLE",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"assign",
+										"{{programId}}"
+									],
+									"query": [
+										{
+											"key": "userSecurityIds",
+											"value": "{{userSecurityId}}",
+											"type": "text"
+										},
+										{
+											"key": "assignmentType",
+											"value": "SINGLE",
+											"type": "text"
+										}
+									]
+								}
 							},
 							"response": []
 						},
