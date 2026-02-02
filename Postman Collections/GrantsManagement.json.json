@@ -2041,7 +2041,7 @@
 												"type": "text"
 											}
 										],
-										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline/{{timelineID}}"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/timeline/{{timelineID}}"
 									},
 									"response": []
 								}
