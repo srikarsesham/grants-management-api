@@ -5277,6 +5277,20 @@
 						},
 						{
 							"name": "Get_Grants_by_Admin_Email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d7011469-2f27-431f-8087-e8b82478e36a",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
 							"id": "9d009258-71ac-4efe-a248-677b05cf5204",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -5290,7 +5304,16 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/admin/{{encodedEmail}}/grants"
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/api/admin/{{loginEmail}}/grants"
 							},
 							"response": []
 						}
@@ -5329,7 +5352,7 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/admin/users/{{encodedEmail}}/assign-role"
+								"url": "{{baseUrl}}/api/admin/users/{{loginEmail}}/assign-role"
 							},
 							"response": []
 						},
@@ -5348,7 +5371,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/admin/users/test.reviewer2@meridiantechsol.onmicrosoft.com/remove-role"
+								"url": "{{baseUrl}}/api/admin/users/{{loginEmail}}/remove-role"
 							},
 							"response": []
 						}
@@ -5720,6 +5743,22 @@
 		},
 		{
 			"key": "encodedApplicantEmail",
+			"value": ""
+		},
+		{
+			"key": "authToken",
+			"value": ""
+		},
+		{
+			"key": "userSecurityId",
+			"value": ""
+		},
+		{
+			"key": "userRole",
+			"value": ""
+		},
+		{
+			"key": "loginEmail",
 			"value": ""
 		}
 	]
