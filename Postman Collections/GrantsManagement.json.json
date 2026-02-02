@@ -5727,7 +5727,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/admin/program/192/phases/1"
+								"url": "{{baseUrl}}/api/admin/program/{{programId}}/phases/{{phaseNumber}}"
 							},
 							"response": []
 						},
@@ -5746,7 +5746,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/admin/delete/192/511"
+								"url": "{{baseUrl}}/api/admin/delete/{{programId}}/{{assignmentId}}"
 							},
 							"response": []
 						}
@@ -5814,6 +5814,14 @@
 		},
 		{
 			"key": "assignmentId",
+			"value": ""
+		},
+		{
+			"key": "phaseNumber",
+			"value": ""
+		},
+		{
+			"key": "phaseId",
 			"value": ""
 		}
 	]
