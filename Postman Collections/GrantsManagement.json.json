@@ -5431,7 +5431,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/admin/program/192/phases"
+								"url": "{{baseUrl}}/api/admin/program/{{programId}}/phases"
 							},
 							"response": []
 						},
@@ -5495,32 +5495,7 @@
 										"type": "text"
 									}
 								],
-								"url": {
-									"raw": "{{baseUrl}}/api/admin/assign/57?assignmentType=PARALLEL&userSecurityIds=8&phaseID=1",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"assign",
-										"57"
-									],
-									"query": [
-										{
-											"key": "assignmentType",
-											"value": "PARALLEL"
-										},
-										{
-											"key": "userSecurityIds",
-											"value": "8"
-										},
-										{
-											"key": "phaseID",
-											"value": "1"
-										}
-									]
-								}
+								"url": "{{baseUrl}}/api/admin/assign/{{programId}}"
 							},
 							"response": []
 						},
