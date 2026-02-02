@@ -5335,7 +5335,7 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/admin/users/test.reviewer@meridiantechsol.onmicrosoft.com/assign-role"
+								"url": "{{baseUrl}}/api/admin/users/{{encodedEmail}}/assign-role"
 							},
 							"response": []
 						},
