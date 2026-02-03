@@ -3158,8 +3158,12 @@
 									"listen": "prerequest",
 									"script": {
 										"id": "f8280617-49f2-4fe9-a2a3-fcc79272550a",
-										"exec": [],
-										"type": "text/javascript"
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
 									}
 								}
 							],
