@@ -2477,7 +2477,7 @@
 									"response": []
 								},
 								{
-									"name": "New Request",
+									"name": "save contact",
 									"id": "4adabf87-ca52-4ee8-a788-95fa1fb6cb4d",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
