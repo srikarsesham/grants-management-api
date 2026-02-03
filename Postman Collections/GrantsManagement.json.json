@@ -2478,34 +2478,6 @@
 								},
 								{
 									"name": "save contact",
-									"id": "4adabf87-ca52-4ee8-a788-95fa1fb6cb4d",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Authorization",
-												"value": "Bearer{{CM_token}}",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n  \"contactName\": \"John Doe\",\r\n  \"email\": \"john.doe@company.com\",\r\n  \"phoneNumber\": \"+91-9876543210\",\r\n  \"designation\": \"HR Manager\",\r\n  \"department\": \"Human Resources\",\r\n  \"isPrimary\": true\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/contact"
-									},
-									"response": []
-								},
-								{
-									"name": "New Request",
 									"id": "3e52a01e-8dd5-4605-bcd2-07fb01ba231e",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
