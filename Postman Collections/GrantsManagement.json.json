@@ -2302,11 +2302,11 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "Bearer {{CM_token}}",
+												"value": "Bearer  {{CM_token}} ",
 												"type": "text"
 											}
 										],
-										"url": "{{baseUrl}}/api/programs/{{programId}}/dates/{{dateid}}"
+										"url": "{{baseUrl}}/api/programs/{{programId}}/dates/{{ProgramDateID}}"
 									},
 									"response": []
 								}
