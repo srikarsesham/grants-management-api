@@ -743,7 +743,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"name\": \"striy6ng\",\r\n  \"description\": \"string\",\r\n  \"status\": \"Inactive\"\r\n}",
+									"raw": "{\r\n  \"name\": \"striy6huhyng\",\r\n  \"description\": \"string\",\r\n  \"status\": \"Inactive\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3222,7 +3222,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/forms/{{programId}}/forms"
+								"url": "{{baseUrl}}/api/config-manager/forms/{{programId}}/forms"
 							},
 							"response": []
 						},
