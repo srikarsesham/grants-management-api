@@ -2464,8 +2464,15 @@
 										"disableBodyPruning": true
 									},
 									"request": {
-										"method": "GET",
-										"header": []
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer{{CM_token}}",
+												"type": "text"
+											}
+										],
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/contact"
 									},
 									"response": []
 								}
