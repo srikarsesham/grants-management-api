@@ -2487,6 +2487,18 @@
 										"header": []
 									},
 									"response": []
+								},
+								{
+									"name": "New Request",
+									"id": "3e52a01e-8dd5-4605-bcd2-07fb01ba231e",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
 								}
 							],
 							"id": "b50ae4db-1f05-4117-89eb-40ed65842e24"
