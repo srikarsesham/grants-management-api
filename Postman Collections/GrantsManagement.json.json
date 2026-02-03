@@ -2221,7 +2221,7 @@
 													"",
 													"// Extract ProgramDateID and save as environment variable",
 													"const programDateId = jsonData.ProgramDateID;",
-													"pm.environment.set(\"dateid\", programDateId);",
+													"pm.environment.set(\"ProgramDateID\", programDateId);",
 													"",
 													"// Console log to confirm the value was saved",
 													"console.log(\"ProgramDateID saved as 'dateid' environment variable:\", programDateId);",
@@ -2243,8 +2243,8 @@
 													"});",
 													"",
 													"// Test 4: Verify dateid environment variable was set correctly",
-													"pm.test(\"Environment variable 'dateid' was set correctly\", function () {",
-													"    const savedDateId = pm.environment.get(\"dateid\");",
+													"pm.test(\"Environment variable 'ProgramDateID' was set correctly\", function () {",
+													"    const savedDateId = pm.environment.get(\"ProgramDateID\");",
 													"    pm.expect(savedDateId).to.eql(jsonData.ProgramDateID);",
 													"});",
 													"",
@@ -2306,7 +2306,7 @@
 												"type": "text"
 											}
 										],
-										"url": "{{baseUrl}}/api/config-manger/programs/{{programId}}/dates/{{ProgramDateID}}"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/dates/{{ProgramDateID}}"
 									},
 									"response": []
 								}
@@ -2316,61 +2316,6 @@
 						{
 							"name": "Program_Sub_Periods",
 							"item": [
-								{
-									"name": "Login_Config_Manager Copy 2",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "52815cc0-c9e5-45e5-9f4a-3d9bd82111cb",
-												"exec": [
-													"let body = pm.response.text().trim();\r",
-													"let json = body.startsWith(\"{\") ? pm.response.json() : {};\r",
-													"let token = (json.token || \"\").trim();\r",
-													"if (!token && /^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$/.test(body)) token = body;\r",
-													"pm.environment.set(\"CM_token\", token);\r",
-													"pm.test(\"Token extracted\", () => pm.expect(token).to.be.a(\"string\").and.not.empty);\r",
-													"\r",
-													"//test"
-												],
-												"type": "text/javascript",
-												"packages": {},
-												"requests": {}
-											}
-										},
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "f8280617-49f2-4fe9-a2a3-fcc79272550a",
-												"exec": [
-													""
-												],
-												"type": "text/javascript",
-												"packages": {},
-												"requests": {}
-											}
-										}
-									],
-									"id": "043298a0-bee0-42bc-94c4-0e44a9703205",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n  \"username\": \"hemanth.naidu@meridianit.com\",\r\n  \"password\": \"dummypassword\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "https://grants.southindia.cloudapp.azure.com/api/configuration-manager/login"
-									},
-									"response": []
-								},
 								{
 									"name": "Update_Subperiod",
 									"id": "12fb59c2-7b0e-4c22-b92f-fa78d1be6cee",
@@ -2401,6 +2346,26 @@
 								},
 								{
 									"name": "Get_SubPeriod",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "8350c30d-a0f6-4287-b2fb-19d73cc85ec6",
+												"exec": [
+													"const response = pm.response.json();\r",
+													"\r",
+													"// if response is an array\r",
+													"if (response.length > 0) {\r",
+													"    pm.environment.set(\"subPeriodId\", response[0].SubPeriodID);\r",
+													"}\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
 									"id": "d8942bde-6332-4276-9435-ab0713265e01",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -2433,7 +2398,7 @@
 												"type": "text"
 											}
 										],
-										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline/{{timelineID}}/sub-periods/{{subPeriodId}}"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/timeline/{{timelineID}}/sub-periods/{{subPeriodId}}"
 									},
 									"response": []
 								},
@@ -2483,7 +2448,7 @@
 												}
 											}
 										},
-										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline/{{timelineID}}/sub-periods"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/timeline/{{timelineID}}/sub-periods"
 									},
 									"response": []
 								}
