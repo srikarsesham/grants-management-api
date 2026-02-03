@@ -2388,14 +2388,14 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n  \"title\": \"Phase 1\",\r\n  \"startDate\": \"12-26-2025\",\r\n  \"startTime\": \"09:00:00\",\r\n  \"endDate\": \"12-30-2025\",\r\n  \"endTime\": \"23:59:00\",\r\n  \"notes\": null,\r\n  \"sortOrder\": null\r\n}\r\n",
+											"raw": "{\r\n  \"title\": \"Phase 1\",\r\n  \"startDate\": \"03-05-2026\",\r\n  \"startTime\": \"09:00:00\",\r\n  \"endDate\": \"03-31-2026\",\r\n  \"endTime\": \"23:59:00\",\r\n  \"notes\": null,\r\n  \"sortOrder\": null\r\n}\r\n",
 											"options": {
 												"raw": {
 													"language": "json"
 												}
 											}
 										},
-										"url": "{{baseUrl}}/api/programs/{{programId}}/timeline/{{timelineID}}/sub-periods/{{subPeriodId}}"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/timeline/{{timelineID}}/sub-periods/{{subPeriodId}}"
 									},
 									"response": []
 								},
