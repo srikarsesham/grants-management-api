@@ -2459,7 +2459,7 @@
 								},
 								{
 									"name": "update contact",
-									"id": "c2950ca4-90c9-464c-9f20-d4510e14fec3",
+									"id": "43dd45d2-30f3-4461-ac29-85938cc31e70",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -2468,11 +2468,23 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "Bearer{{CM_token}}",
+												"value": "Bearer {{CM_token}}",
 												"type": "text"
 											}
 										],
-										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/contact"
+										"url": "{{baseUrl}}/api/config-manager/programs/{programId}/contact"
+									},
+									"response": []
+								},
+								{
+									"name": "New Request",
+									"id": "4adabf87-ca52-4ee8-a788-95fa1fb6cb4d",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": []
 									},
 									"response": []
 								}
