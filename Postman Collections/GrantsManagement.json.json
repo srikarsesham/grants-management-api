@@ -2478,29 +2478,13 @@
 								},
 								{
 									"name": "save contact",
-									"id": "3e52a01e-8dd5-4605-bcd2-07fb01ba231e",
+									"id": "96b28bf5-65a2-4fdd-841c-0026e14bff37",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
 									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Authorization",
-												"value": "{{CM_token}}",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n  \"contactName\": \"John Doe\",\r\n  \"email\": \"john.doe@company.com\",\r\n  \"phoneNumber\": \"+91-9876543210\",\r\n  \"designation\": \"HR Manager\",\r\n  \"department\": \"Human Resources\",\r\n  \"isPrimary\": true\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/contact"
+										"method": "GET",
+										"header": []
 									},
 									"response": []
 								}
