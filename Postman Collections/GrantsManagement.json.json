@@ -1293,7 +1293,7 @@
 												"type": "text"
 											}
 										],
-										"url": "{{baseUrl}}/api/programs/{{programId}}/documents/{{documentId}}"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/documents/{{documentId}}/download"
 									},
 									"response": []
 								},
@@ -1323,7 +1323,7 @@
 												}
 											]
 										},
-										"url": "{{baseUrl}}/api/programs/{{programId}}/documents/{{documentId}}"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/documents/{{documentId}}"
 									},
 									"response": []
 								},
