@@ -2458,7 +2458,7 @@
 									"response": []
 								},
 								{
-									"name": "update contract",
+									"name": "update contact",
 									"id": "c2950ca4-90c9-464c-9f20-d4510e14fec3",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
