@@ -2439,7 +2439,7 @@
 							"name": "program Contact",
 							"item": [
 								{
-									"name": "New Request",
+									"name": "Get Contact",
 									"id": "735a0829-2960-4af1-9e70-238f6af0e220",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -2453,7 +2453,19 @@
 												"type": "text"
 											}
 										],
-										"url": "{{baseUrl}}/api/config-manager/programs/{programId}/contact"
+										"url": "{{baseUrl}}/api/config-manager/programs/{{programId}}/contact"
+									},
+									"response": []
+								},
+								{
+									"name": "update contract",
+									"id": "c2950ca4-90c9-464c-9f20-d4510e14fec3",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": []
 									},
 									"response": []
 								}
