@@ -996,6 +996,22 @@
 						},
 						{
 							"name": "Update_Division",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5db3c42d-385f-4fb7-8ac3-1e89e8e42458",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
 							"id": "7daeb311-1e42-4bec-bb0f-0ae6453dbbd2",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
