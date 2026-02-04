@@ -1010,6 +1010,22 @@
 										"packages": {},
 										"requests": {}
 									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "491b9af5-e1d0-41ca-8f9f-f893b60b68e0",
+										"exec": [
+											"if (!pm.response) {\r",
+											"    console.log(\"No response received, skipping...\");\r",
+											"    postman.setNextRequest(\"Get all divisions\");\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
 								}
 							],
 							"id": "7daeb311-1e42-4bec-bb0f-0ae6453dbbd2",
