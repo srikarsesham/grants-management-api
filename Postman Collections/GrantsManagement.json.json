@@ -3792,6 +3792,30 @@
 						},
 						{
 							"name": "Get_recent_applications",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "98bbb2b6-47a9-4a50-b791-9ee1b1c50b90",
+										"exec": [
+											"let res = pm.response.json();\r",
+											"\r",
+											"if (res.length > 0) {\r",
+											"    let appId = res[0].ApplicationID;   // first application\r",
+											"    pm.environment.set(\"applicationId\", appId);\r",
+											"\r",
+											"    console.log(\"Saved ApplicationID:\", appId);\r",
+											"}\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
 							"id": "7790d67e-8061-4d1f-a98a-a6f2aa241487",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -4252,7 +4276,7 @@
 										"type": "text"
 									}
 								],
-								"url": "{{baseUrl}}/api/applicant/applications/{applicationId}/table-upload"
+								"url": "{{baseUrl}}/api/applicant/applications/{{applicationId}}/table-upload"
 							},
 							"response": []
 						},
