@@ -3867,14 +3867,20 @@
 									"script": {
 										"id": "ba645050-d6e5-4ab9-b518-33332c9c6c6f",
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {\r",
+											"pm.test(\"Status code is 200\", () => {\r",
 											"    pm.response.to.have.status(200);\r",
 											"});\r",
 											"\r",
-											"pm.test(\"Notifications array is present\", function () {\r",
+											"pm.test(\"Success flag is true\", () => {\r",
 											"    const jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.notifications).to.be.an(\"array\");\r",
-											"});"
+											"    pm.expect(jsonData.success).to.be.true;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Message is correct\", () => {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.be.a(\"string\");\r",
+											"});\r",
+											""
 										],
 										"type": "text/javascript",
 										"packages": {},
