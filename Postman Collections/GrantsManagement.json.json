@@ -728,6 +728,22 @@
 						},
 						{
 							"name": "update Department",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "31f49d15-c91a-4cc3-8563-a8051cb17320",
+										"exec": [
+											"let random = Math.floor(Math.random() * 100000);\r",
+											"pm.environment.set(\"deptName\", \"dept_\" + random);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
 							"id": "4d2f10d6-8368-4668-bef1-ea00fc437494",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -743,7 +759,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"name\": \"striy6huhyng\",\r\n  \"description\": \"string\",\r\n  \"status\": \"Inactive\"\r\n}",
+									"raw": "{\r\n  \"name\": \"string50\",\r\n  \"description\": \"string\",\r\n  \"status\": \"Inactive\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3685,11 +3701,15 @@
 											"    jsonData.forEach(item => {\r",
 											"        pm.expect(item.NotificationID).to.be.a(\"number\");\r",
 											"        pm.expect(item.Body).to.be.a(\"string\");\r",
-											"        pm.expect(item.CreatedDate).to.be.a(\"string\");\r",
+											"\r",
+											"        pm.expect(item.CreatedDate).to.be.an(\"object\");\r",
+											"        pm.expect(item.CreatedDate.offsetDateTime).to.be.a(\"string\");\r",
+											"\r",
 											"        pm.expect(item.Type).to.be.a(\"string\");\r",
 											"        pm.expect(item.IsRead).to.be.a(\"boolean\");\r",
 											"    });\r",
 											"});\r",
+											"\r",
 											"\r",
 											"\r",
 											""
