@@ -5515,6 +5515,23 @@
 					"item": [
 						{
 							"name": "Assign_or_Update_user_role",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f572e577-f157-420f-ba30-ecf7fcc3e0b8",
+										"exec": [
+											"pm.test(\"Should return 400 when modifying ADMIN role (expected)\", () => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
 							"id": "1a83d17d-5cb2-4be1-8a5e-6ebbea6ef54e",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
