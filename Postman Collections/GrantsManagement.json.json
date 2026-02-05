@@ -5565,6 +5565,26 @@
 						},
 						{
 							"name": "remove_user-role",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "0fe1be49-3ce5-440f-bd7c-671132fc7b5b",
+										"exec": [
+											"pm.test(\"Admin role removal blocked correctly\", () => {\r",
+											"    pm.response.to.have.status(403);\r",
+											"\r",
+											"    let res = pm.response.text();\r",
+											"    pm.expect(res).to.include(\"only remove REVIEWER or APPLICANT\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
 							"id": "0e818b79-b1dd-4da1-9f51-f27ee685d99f",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
