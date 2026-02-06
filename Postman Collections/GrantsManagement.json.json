@@ -1032,10 +1032,10 @@
 									"script": {
 										"id": "491b9af5-e1d0-41ca-8f9f-f893b60b68e0",
 										"exec": [
-											"if (!pm.response) {\r",
-											"    console.log(\"No response received, skipping...\");\r",
-											"    postman.setNextRequest(\"Get all divisions\");\r",
-											"}\r",
+											"// if (!pm.response) {\r",
+											"//     console.log(\"No response received, skipping...\");\r",
+											"//     postman.setNextRequest(\"Get all divisions\");\r",
+											"// }\r",
 											""
 										],
 										"type": "text/javascript",
@@ -1053,13 +1053,13 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer {{CM_token}}",
+										"value": "Bearer  {{CM_token}}",
 										"type": "text"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"name\": \"string\",\r\n  \"description\": \"string\",\r\n  \"status\": \"Active\"\r\n}",
+									"raw": "{\r\n  \"name\": \"strin567y98gg778\",\r\n  \"description\": \"string\",\r\n  \"status\": \"Active\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
